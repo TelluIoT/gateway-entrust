@@ -1,5 +1,6 @@
 
-- hosts: gateways
+- hosts: localhost
+  connection: local
   tasks:
 
     - name: Load Gateway Version
