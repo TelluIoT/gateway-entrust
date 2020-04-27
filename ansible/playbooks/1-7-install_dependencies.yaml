@@ -1,4 +1,5 @@
-- hosts: gateways
+- hosts: localhost
+  connection: local
   tasks:
     - name: Install dependencies
       apt:
