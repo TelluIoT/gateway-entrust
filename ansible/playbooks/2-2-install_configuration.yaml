@@ -93,6 +93,6 @@
         - gw-network-agent
         - gw-prometheus
 
-    - name: Reload Systemd
-      systemd:
-        daemon_reload: yes
+    #- name: Reload Systemd
+    #  systemd:
+    #    daemon_reload: yes
