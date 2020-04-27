@@ -1,4 +1,5 @@
-- hosts: gateways
+- hosts: localhost
+  connection: local
   roles:
     - geerlingguy.pip
     - geerlingguy.docker
