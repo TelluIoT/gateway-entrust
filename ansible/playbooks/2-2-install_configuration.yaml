@@ -15,11 +15,11 @@
         - "../public-files/udev/99-usb-serial.rules"
 
     - name: Reload udev rules
-      command: "udevadm control --reload-rules"
+      command: "sudo udevadm control --reload-rules"
       become: true
 
     - name: Trigger udev rules
-      command: "udevadm trigger"
+      command: "sudo udevadm trigger"
       become: true
 
     - name: Creates configuration directory (/etc/tellugw)
