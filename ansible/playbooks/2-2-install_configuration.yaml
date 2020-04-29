@@ -37,7 +37,7 @@
         force: yes
         owner: root
         group: root
-        mode: 0644
+        mode: 0666
     
     - name: Edit configuration file (setup the right gateway_id)
       replace:
