@@ -1,5 +1,5 @@
-- hosts: localhost
-  connection: local
+- hosts: gateways
+  #connection: local
   tasks:
 
     - name: Install udev rule
@@ -14,13 +14,13 @@
         - "../public-files/udev/99-gps-serial.rules"
         - "../public-files/udev/99-usb-serial.rules"
 
-    #- name: Reload udev rules
-    #  command: "udevadm control --reload-rules"
-    #  become: true
+    - name: Reload udev rules
+      command: "udevadm control --reload-rules"
+      become: true
 
-    #- name: Trigger udev rules
-    #  command: "udevadm trigger"
-    #  become: true
+    - name: Trigger udev rules
+      command: "udevadm trigger"
+      become: true
 
     - name: Creates configuration directory (/etc/tellugw)
       file:
