@@ -77,21 +77,21 @@
         - "restart_network.sh"
         - "restart_system.sh"
 
-    - name: Install Gateway Service Descriptions
-      copy:
-        src: ../public-files/systemd/{{ item }}.service
-        dest:  /etc/systemd/system/
-        force: yes
-        owner: root
-        group: root
-        mode: 0644
-      with_items:
-        # - gw-cloud-agent
-        - gw-bluetooth
-        - gw-gps
-        - gw-sensor-bridge
-        - gw-network-agent
-        - gw-prometheus
+   # - name: Install Gateway Service Descriptions
+   #   copy:
+   #     src: ../public-files/systemd/{{ item }}.service
+   #     dest:  /etc/systemd/system/
+   #     force: yes
+   #     owner: root
+   #     group: root
+   #     mode: 0644
+   #   with_items:
+   #     # - gw-cloud-agent
+   #     - gw-bluetooth
+   #     - gw-gps
+   #     - gw-sensor-bridge
+   #     - gw-network-agent
+   #     - gw-prometheus
 
     #- name: Reload Systemd
     #  systemd:
