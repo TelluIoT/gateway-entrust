@@ -9,7 +9,7 @@
         force: yes
         owner: root
         group: root
-        mode: 0644
+        mode: 0666
       with_items:
         - "../public-files/udev/99-gps-serial.rules"
         - "../public-files/udev/99-usb-serial.rules"
