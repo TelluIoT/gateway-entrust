@@ -1,7 +1,7 @@
 gateways:
     hosts:
         ENACTGW001:
-            ansible_ssh_host: localhost
+            ansible_ssh_host: 10.0.0.9
     vars:
         ansible_become: yes
         ansible_ssh_user: pi
