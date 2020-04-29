@@ -1,5 +1,5 @@
-- hosts: localhost
-  connection: local
+- hosts: gateways
+  #connection: local
   tasks:
   
   # A network shared by the different containers
