@@ -11,7 +11,7 @@ Next, you SSH into your Raspberry (the default "pi/raspberry" login/password pai
    
    `docker run --network host rdautov/prometheus:1.0.0`
  
-The Prometheus Exported feeds some CPU temperature values to the Prometheus Broker via MQTT. You can check if it is running by plotting the graph on the Prometheus dashboard (on port 9090).
+The Prometheus Exporter feeds some CPU temperature values to the Prometheus Broker via MQTT. You can check if it is running by plotting the graph on the Prometheus dashboard (on port 9090).
 
 #### To run the Network Agent:
 
