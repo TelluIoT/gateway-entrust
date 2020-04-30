@@ -124,14 +124,14 @@ List the gateways to be setup in an inventory file (for example `inventory_lan.y
    ansible-playbook -i inventory_lan.yaml 1-initial-provisioning.yaml
 ```
 
-## 3. Building the code
+~~## 3. Building the code~~
 
-The code for the different components is in the src directory. For building the code a version number should be provided in `build_version.txt` then can `./build_all.sh`. This will generate C code for all the ThingML components and create a redy to deploy distribution archive in `ansible/releases`.
+~~The code for the different components is in the src directory. For building the code a version number should be provided in `build_version.txt` then can `./build_all.sh`. This will generate C code for all the ThingML components and create a redy to deploy distribution archive in `ansible/releases`.~~
 
 ## 4. Deploying a specific release
 
 
-* Set the desired version number in `ansible/public-files/gateway_version.yaml` (it must be available in `ansible/releases`)
+~~* Set the desired version number in `ansible/public-files/gateway_version.yaml` (it must be available in `ansible/releases`)~~
 
 *  Deploy release using ansible: 
 
@@ -147,11 +147,11 @@ The code for the different components is in the src directory. For building the 
 * Access Prometheus UI: http://192.168.1.170:9090/
 * Prometeus Exporter: http://192.168.1.170:8086/
 
-## 6. Adding a command to the Arduino:
+~~## 6. Adding a command to the Arduino:~~
 
-This commit provides an example to add a basic actuation command to the arduino:
+~~This commit provides an example to add a basic actuation command to the arduino:~~
 
-https://github.com/TelluIoT/gateway-enact/commit/cd5f730c5a411faf9b95d60a2135654eb58d3e08
+~~https://github.com/TelluIoT/gateway-enact/commit/cd5f730c5a411faf9b95d60a2135654eb58d3e08~~
 
 ## 7. Having fun with NodeRed
 NodeRed is now also deployed via docker on the gateway (http://192.168.1.170:1880/).
