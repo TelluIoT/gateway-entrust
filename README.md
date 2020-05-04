@@ -1,23 +1,6 @@
+I have commented out some of the bits in Ansible playbooks, which are not that important for us (Playbooks 1-1, 1-2, 1-3, 1-4, and 1-5) or describe steps that we want to avoid (everything that has to do with running C components as Linux services in Playbooks 2-2, 3-1, and 3-2). 
 
-## 0. How to run C components as Docker containers
-
-I have commented out some of the bits in Ansible playbooks, which are not that important for us (Playbooks 1-1, 1-2, 1-3, 1-4, and 1-5) or describe steps that we want to avoid (everything that has to do with running C components as Linux services in Playbooks 2-2, 3-1, and 3-2). Most of Franck's instructions (see below starting from Step 1. Initial Setup) still apply and need to be done to install Docker, copy all required files, install required libraries, and start Prometheus, NodeRed, and MQTT broker as Docker containers on the Raspberry board. This is a one-off procedure, and the three containers can be started as usual using CLI via SSH afterwards.
-
-Next, you SSH into your Raspberry (the default "pi/raspberry" login/password pair should be working) and do the following:
-
-#### To run the Prometheus Exporter, which will be accesible on port 8086 (it is required that the MQTT broker is already running):
-
-   `docker pull rdautov/prometheus:1.0.0`
-   
-   `docker run --network host rdautov/prometheus:1.0.0`
- 
-The Prometheus Exporter feeds some CPU temperature values to the Prometheus Broker via MQTT. You can check if it is running by plotting the graph on the Prometheus dashboard (on port 9090).
-
-#### To run the Network Agent:
-
-   `docker pull rdautov/network-agent:1.0.0`
-   
-   `docker run rdautov/network-agent:1.0.0`
+Most of Franck's instructions (see below starting from Step 1. Initial Setup) still apply and need to be done to install Docker, copy all required files, install required libraries, and start Prometheus, NodeRed, and MQTT broker as Docker containers on the Raspberry board. This is a one-off procedure, and the three containers can be started as usual using CLI via SSH afterwards.
 
 ## 1. Initial setup
 
@@ -139,7 +122,23 @@ List the gateways to be setup in an inventory file (for example `inventory_lan.y
    cd ansible
    ansible-playbook -i inventory_lan.yaml 2-deploy-software.yaml
 ```
+## 4.1 How to run C components as Docker containers
 
+Next, you SSH into your Raspberry (the default "pi/raspberry" login/password pair should be working) and do the following:
+
+#### To run the Prometheus Exporter, which will be accesible on port 8086 (it is required that the MQTT broker is already running):
+
+   `docker pull rdautov/prometheus:1.0.0`
+   
+   `docker run --network host rdautov/prometheus:1.0.0`
+ 
+The Prometheus Exporter feeds some CPU temperature values to the Prometheus Broker via MQTT. You can check if it is running by plotting the graph on the Prometheus dashboard (on port 9090).
+
+#### To run the Network Agent:
+
+   `docker pull rdautov/network-agent:1.0.0`
+   
+   `docker run rdautov/network-agent:1.0.0`
 
 ## 5. Check what is running
 
