@@ -1,3 +1,25 @@
+# Setup without Ansible
+
+## 1. SSH into your RPi and run the command to install Docker:
+
+`curl -sSL https://get.docker.com | sh`
+
+## 2. Install Git, clone the repository, and run the script:
+
+`sudo git apt-get update && sudo git apt-get install git`
+
+`git clone https://github.com/rdautov/gateway-enact.git`
+
+`cd gateway-enact && .\script.sh`
+
+## 3. Download and run several Docker containers define in docker-compose.yml at once:
+
+`docker-compose up`
+
+---
+
+# Setup with Ansible
+
 I have commented out some of the bits in Ansible playbooks, which are not that important for us (Playbooks 1-1, 1-2, 1-3, 1-4, and 1-5) or describe steps that we want to avoid (everything that has to do with running C components as Linux services in Playbooks 2-2, 3-1, and 3-2). 
 
 Most of Franck's instructions (see below starting from Step 1. Initial Setup) still apply and need to be done to install Docker, copy all required files, install required libraries, and start Prometheus, NodeRed, and MQTT broker as Docker containers on the Raspberry board. This is a one-off procedure, and the three containers can be started as usual using CLI via SSH afterwards.
