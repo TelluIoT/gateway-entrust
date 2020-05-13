@@ -23,4 +23,14 @@ sed -i 's/GATEWAYID/enact-gateway/g' /etc/tellugw/prometheus.yml
 ###########################################################
 mkdir -p /var/prometheus
 
+##########################################################
+# Install Docker-Compose
+##########################################################
+apt-get install -y libffi-dev libssl-dev python3 python3-pip
+apt-get remove python-configparser
+pip3 install docker-compose
+
+#########################################################
+# Confirm that everything is OK
+#########################################################
 echo "[ALL: SUCCESS]"
