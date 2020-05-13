@@ -12,7 +12,7 @@
 
 `git clone https://github.com/rdautov/gateway-enact.git`
 
-`cd gateway-enact && .\script.sh`
+`cd gateway-enact`
 
 `sudo sh script.sh`
 
