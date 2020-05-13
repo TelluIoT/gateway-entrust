@@ -6,7 +6,7 @@
 
 ## 2. Install Git, clone the repository, and run the script:
 
-`sudo git apt-get update && sudo git apt-get install git`
+`sudo apt-get update && sudo apt-get install git`
 
 `git clone https://github.com/rdautov/gateway-enact.git`
 
