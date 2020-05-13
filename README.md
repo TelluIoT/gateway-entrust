@@ -1,5 +1,7 @@
 # Setup without Ansible
 
+## 0. Prepare a Raspberry Pi board: Deploy Raspbian OS, setup SSH and network connection according to Franck's instructions below
+
 ## 1. SSH into your RPi and run the command to install Docker:
 
 `curl -sSL https://get.docker.com | sh`
