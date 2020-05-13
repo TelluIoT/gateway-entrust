@@ -16,7 +16,7 @@ cp ansible/public-files/prometheus.yml /etc/tellugw
 ###########################################################
 # Replace the gateway ID
 ###########################################################
-sed -i 's/GATEWAYID/10.0.0.9/g' /etc/tellugw/prometheus.yml
+sed -i 's/GATEWAYID/enact-gateway/g' /etc/tellugw/prometheus.yml
 
 ###########################################################
 # Create persistent data directory for Prometheus
