@@ -16,7 +16,15 @@
 
 `sudo sh script.sh`
 
-## 3. Download and run several Docker containers defined in docker-compose.yml at once:
+## 3. Install Docker-Compose:
+
+`sudo apt-get install -y libffi-dev libssl-dev python3 python3-pip`
+
+`sudo apt-get remove python-configparser`
+
+`sudo pip3 install docker-compose`
+
+## 4. Download and run several Docker containers defined in docker-compose.yml at once:
 
 `docker-compose up`
 
