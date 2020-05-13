@@ -12,7 +12,9 @@
 
 `cd gateway-enact && .\script.sh`
 
-## 3. Download and run several Docker containers define in docker-compose.yml at once:
+`sudo sh script.sh`
+
+## 3. Download and run several Docker containers defined in docker-compose.yml at once:
 
 `docker-compose up`
 
