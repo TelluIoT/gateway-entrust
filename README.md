@@ -10,9 +10,9 @@
 
 `sudo apt-get update && sudo apt-get install -y git`
 
-`git clone https://github.com/rdautov/gateway-enact.git`
+`git clone https://github.com/TelluIoT/gateway-entrust.git`
 
-`cd gateway-enact`
+`cd gateway-entrust`
 
 `sudo sh script.sh`
 
