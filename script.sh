@@ -24,7 +24,7 @@ sed -i 's/GATEWAYID/enact-gateway/g' /etc/tellugw/prometheus.yml
 mkdir -p /var/prometheus
 
 ##########################################################
-# Install Docker Compose
+# Install Docker Compose, based on https://docs.docker.com/engine/install/raspberry-pi-os/#install-using-the-repository
 ##########################################################
 # Add Docker's official GPG key:
 sudo apt-get update
@@ -45,4 +45,5 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin 
 #########################################################
 # Confirm that everything is OK
 #########################################################
+sudo docker run hello-world
 echo "[ALL: SUCCESS]"
