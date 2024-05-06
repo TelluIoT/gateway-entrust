@@ -3,13 +3,6 @@
 # toggle fail fast
 # set -e
 
-
-###########################################################
-# Make the script executable
-###########################################################
-chmod +x "$0"
-
-
 ###########################################################
 # Verify network id parameter was received
 ###########################################################
@@ -23,14 +16,12 @@ input_network_id="$1"
 ###########################################################
 # Install zerotier
 ###########################################################
-chmod +x zerotier_install.sh
-./zerotier_install.sh
+bash ./zerotier_install.sh
 
 ###########################################################
 # Connect to zerotier network
 ###########################################################
-chmod +x zerotier_connect.sh
-./zerotier_connect.sh $input_network_id
+bash ./zerotier_connect.sh $input_network_id
 
 #########################################################
 # Confirm that everything is OK
