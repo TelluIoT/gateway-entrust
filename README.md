@@ -14,15 +14,16 @@
 
 `cd gateway-entrust`
 
-## 2.5. [Optional] Install zerotier to enable remote access
+## 3. [Optional] Install zerotier to enable remote access
 chmod -x zerotier_install.sh
 sudo zerotier_deploy.sh
-# if the gateway is setup with remote access, it needs to be enabled in the zerotier admin together with username and password of the device. Further steps can be done remotely, or directly in the gateway
 
-## 3. Run the docker setup script to copy files and install Docker-Compose:
+if the gateway is setup with remote access, it needs to be enabled in the zerotier admin together with username and password of the device. Further steps can then be done remotely (or locally if preferred)
+
+## 4. Run the docker setup script to copy files and install Docker-Compose:
 `sudo sh script.sh`
 
-## 4. Download and run several Docker containers defined in docker-compose.yml at once:
+## 5. Download and run several Docker containers defined in docker-compose.yml at once:
 
 `sudo docker-compose up`
 
