@@ -4,13 +4,6 @@
 # set -e
 
 ###########################################################
-# Upgrade pi
-###########################################################
-sudo apt update
-
-sudo apt upgrade -y
-
-###########################################################
 # Install zerotier
 ###########################################################
 curl https://raw.githubusercontent.com/zerotier/ZeroTierOne/master/doc/contact%40zerotier.com.gpg | gpg --dearmor | sudo tee /usr/share/keyrings/zerotierone-archive-keyring.gpg >/dev/null
