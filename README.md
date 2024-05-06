@@ -6,7 +6,7 @@
 
 `curl -sSL https://get.docker.com | sh`
 
-## 2. Install Git, clone the repository, and run the script to copy files and install Docker-Compose:
+## 2. Install Git, clone the repository and navigate into it
 
 `sudo apt-get update && sudo apt-get install -y git`
 
@@ -14,6 +14,12 @@
 
 `cd gateway-entrust`
 
+## 2.2 [optional] Install zerotier to enable remote access
+chmod -x zerotier_install.sh
+sudo zerotier_deploy.sh
+# if the gateway is setup with remote access, it needs to be enabled in the zerotier admin together with username and password of the device. Further steps can be done remotely, or directly in the gateway
+
+## 2.5 Run the docker setup script to copy files and install Docker-Compose:
 `sudo sh script.sh`
 
 ## 3. Download and run several Docker containers defined in docker-compose.yml at once:
