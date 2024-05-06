@@ -13,9 +13,11 @@
 `cd gateway-entrust`
 
 ## 2. [Optional] Install zerotier to enable remote access
-`bash ./zerotier_deploy.sh` [ZeroTier network-ID]
-
 If the gateway is setup with remote access, it needs to be enabled in the zerotier admin together with username and password of the device. Further steps can then be done either remotely or locally
+
+Take the ZeroTier Network ID that the gateway should be added to and pass to the deployment script
+
+`bash ./zerotier_deploy.sh [ZeroTier network ID]`
 
 ## 3. and run the command to install Docker:
 
