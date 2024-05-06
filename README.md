@@ -1,8 +1,11 @@
 # Setup
 
-## 0. Prepare a Raspberry Pi board: Deploy Raspbian OS, setup SSH and network connection according to Franck's instructions below
+## 0. Prepare a Raspberry Pi board: 
+1. Install the Raspberry Pi Imager on your computer: https://www.raspberrypi.com/software/
 
-## 1. SSH into your RPi and run the command to install Docker:
+2. Using a SD-card burner tool, burn the "Raspberry Pi OS" image (the default OS) onto the SD-card of the Raspberry Pi. In the wizard, you can prepare network access and enable SSH so it will be reachable on the local network on startup.
+   
+## 1. SSH into your RPi (on local network) and run the command to install Docker:
 
 `curl -sSL https://get.docker.com | sh`
 
@@ -18,7 +21,7 @@
 chmod -x zerotier_install.sh
 sudo zerotier_deploy.sh
 
-If the gateway is setup with remote access, it needs to be enabled in the zerotier admin together with username and password of the device. Further steps can then be done remotely (or locally if preferred)
+If the gateway is setup with remote access, it needs to be enabled in the zerotier admin together with username and password of the device. Further steps can then be done either remotely or locally
 
 ## 4. Run the docker setup script to copy files and install Docker-Compose:
 `sudo sh script.sh`
