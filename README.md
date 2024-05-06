@@ -19,6 +19,7 @@
 
 ## 3. [Optional] Install zerotier to enable remote access
 `chmod -x zerotier_install.sh`
+
 `sudo zerotier_deploy.sh`
 
 If the gateway is setup with remote access, it needs to be enabled in the zerotier admin together with username and password of the device. Further steps can then be done either remotely or locally
