@@ -6,7 +6,7 @@
 2. Using a SD-card burner tool, burn the "Raspberry Pi OS" image (the default OS) onto the SD-card of the Raspberry Pi. In the wizard, you can prepare network access and enable SSH so it will be reachable on the local network on startup.
    
 ## 1.SSH into your RPi (on local network) and install Git, clone the repository and navigate into it
-If you know the MAC address of the RPi, you can scan the network and determine its IP-address. If not, you can log onto the pi and get it from there with `hostname -I`
+If you know the MAC address of the RPi, you can scan the network and determine its IP-address. If not, you can access the pi directly and get it from the terminal with `hostname -I`
 
 `sudo apt-get update && sudo apt-get install -y git`
 
