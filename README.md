@@ -18,7 +18,7 @@
 chmod -x zerotier_install.sh
 sudo zerotier_deploy.sh
 
-Ff the gateway is setup with remote access, it needs to be enabled in the zerotier admin together with username and password of the device. Further steps can then be done remotely (or locally if preferred)
+If the gateway is setup with remote access, it needs to be enabled in the zerotier admin together with username and password of the device. Further steps can then be done remotely (or locally if preferred)
 
 ## 4. Run the docker setup script to copy files and install Docker-Compose:
 `sudo sh script.sh`
