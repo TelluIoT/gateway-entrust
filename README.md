@@ -34,6 +34,6 @@ Take the ZeroTier Network ID that the gateway should be added to and pass to the
 
 ## 5. Download and run several Docker containers defined in docker-compose.yml at once:
 
-`sudo docker-compose up`
+`sudo docker compose up`
 
 ---
