@@ -24,18 +24,35 @@ sed -i 's/GATEWAYID/enact-gateway/g' /etc/tellugw/prometheus.yml
 mkdir -p /var/prometheus
 
 ##########################################################
-# Install Docker Compose, based on https://docs.docker.com/engine/install/raspberry-pi-os/#install-using-the-repository
+# Install Docker Compose, based on https://docs.docker.com/engine/install/raspberry-pi-os/#install-using-the-repository (Raspberry PI OS 32-bit)
+##########################################################
+# # Add Docker's official GPG key:
+# sudo apt-get update
+# sudo apt-get install ca-certificates curl
+# sudo install -m 0755 -d /etc/apt/keyrings
+# sudo curl -fsSL https://download.docker.com/linux/raspbian/gpg -o /etc/apt/keyrings/docker.asc
+# sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+# # Set up Docker's APT repository:
+# echo \
+#   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/raspbian \
+#   $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+#   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+# sudo apt-get update
+
+##########################################################
+# Install Docker Compose, based on https://docs.docker.com/engine/install/debian/#install-using-the-repository (Raspberry PI OS 64-bit)
 ##########################################################
 # Add Docker's official GPG key:
 sudo apt-get update
 sudo apt-get install ca-certificates curl
 sudo install -m 0755 -d /etc/apt/keyrings
-sudo curl -fsSL https://download.docker.com/linux/raspbian/gpg -o /etc/apt/keyrings/docker.asc
+sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
 sudo chmod a+r /etc/apt/keyrings/docker.asc
 
-# Set up Docker's APT repository:
+# Add the repository to Apt sources:
 echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/raspbian \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
   $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt-get update
