@@ -4,7 +4,7 @@
 
 1. Install the Raspberry Pi Imager on your computer: https://www.raspberrypi.com/software/
 
-2. Using a SD-card burner tool, burn the "Raspberry Pi OS" image (the default OS) onto the SD-card of the Raspberry Pi. In the wizard, you can prepare network access and enable SSH so it will be reachable on the local network on startup.
+2. Using a SD-card burner tool, burn the "Raspberry Pi OS 64-bit" image (the default OS) onto the SD-card of the Raspberry Pi. In the wizard, you can prepare network access and enable SSH so it will be reachable on the local network on startup.
 
 ## 1.SSH into your RPi (on local network) and install Git, clone the repository and navigate into it
 
