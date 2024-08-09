@@ -24,15 +24,11 @@ Take the ZeroTier Network ID that the gateway should be added to and pass to the
 
 `bash ./zerotier_deploy.sh [ZeroTier network ID]`
 
-## 3. and run the command to install Docker:
-
-`curl -sSL https://get.docker.com | sh`
-
-## 4. Run the docker setup script to copy files and install Docker-Compose:
+## 3. Run the docker setup script to copy files and install Docker-Compose:
 
 `sudo sh install_docker.sh`
 
-## 5. Download and run several Docker containers defined in docker-compose.yml at once:
+## 4. Download and run several Docker containers defined in docker-compose.yml at once:
 
 `sudo docker compose up`
 
