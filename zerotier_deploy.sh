@@ -16,12 +16,12 @@ input_network_id="$1"
 ###########################################################
 # Install zerotier
 ###########################################################
-bash ./zerotier_install.sh
+bash ./src/zerotier/zerotier_install.sh
 
 ###########################################################
 # Connect to zerotier network
 ###########################################################
-bash ./zerotier_connect.sh $input_network_id
+bash ./src/zerotier/zerotier_connect.sh $input_network_id
 
 #########################################################
 # Confirm that everything is OK
