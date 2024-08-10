@@ -22,14 +22,14 @@ If the gateway is setup with remote access, it needs to be enabled in the zeroti
 
 Take the ZeroTier Network ID that the gateway should be added to and pass to the deployment script
 
-`bash ./zerotier_deploy.sh [ZeroTier network ID]`
+`bash ./setup_zerotier.sh [ZeroTier network ID]`
 
-## 3. Run the docker setup script to copy files and install Docker-Compose:
+## 3. [Optional] Install and run Docker Compose
 
-`sudo sh install_docker.sh`
+## 3.1 Run the docker setup script to copy files and install Docker-Compose:
 
-## 4. Download and run several Docker containers defined in docker-compose.yml at once:
+`sudo sh setup_docker.sh`
+
+## 3.2 Download and run several Docker containers defined in docker-compose.yml at once:
 
 `sudo docker compose up`
-
----

@@ -1,3 +1,0 @@
-# Rule for the front panel arduino connected via USB
-SUBSYSTEM=="tty", ATTRS{idVendor}=="2341", ATTRS{idProduct}=="0043", SYMLINK+="ttyFPSerial"
-SUBSYSTEM=="tty", ATTRS{idVendor}=="2341", ATTRS{idProduct}=="0001", SYMLINK+="ttyFPSerial"

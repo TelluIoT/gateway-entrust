@@ -1,3 +1,0 @@
-- hosts: gateways
-  roles:
-    - ANXS.hostname
