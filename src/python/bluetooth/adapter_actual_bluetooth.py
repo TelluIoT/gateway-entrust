@@ -1,18 +1,19 @@
 from bleak import BleakClient
 
+from i_bluetooth_adapter import IBluetoothAdapter;
 
-class MockAdapter(IBluetoothAdapter):
-    def __init__(self, address: str):
-        self.address = address
-        self.client = BleakClient(self.address)
+class AdapterActualBluetooth(IBluetoothAdapter):
+    def __init__(self, macAddress: str):
+        self.macAddress = macAddress
+        self.client = BleakClient(self.macAddress)
 
     async def connect(self):
-        print(f"Connecting to {self.address}...")
+        print(f"Connecting to {self.macAddress}...")
         await self.client.connect()
         print("Connected.")
 
     async def disconnect(self):
-        print(f"Disconnecting from {self.address}...")
+        print(f"Disconnecting from {self.macAddress}...")
         await self.client.disconnect()
         print("Disconnected.")
 

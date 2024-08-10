@@ -1,7 +1,0 @@
-class BluetoothAdapterFactory:
-    @staticmethod
-    def create_adapter(adapter_type: str, address: str):
-        if adapter_type == "mock":
-            return Mock(address)
-        else:
-            raise ValueError("Unsupported adapter type")
