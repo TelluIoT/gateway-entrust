@@ -1,0 +1,16 @@
+{
+    "name": "Raspberry Pi 3B+ Dev Container",
+    "build": {
+      "dockerfile": "Dockerfile",
+      "context": ".."
+    },
+    "settings": {
+      "terminal.integrated.shell.linux": "/bin/bash"
+    },
+    "extensions": [
+      "ms-python.python",
+      "ms-azuretools.vscode-docker"
+    ],
+    "remoteUser": "root",
+    "postCreateCommand": "echo 'Dev container ready!"
+  }
