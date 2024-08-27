@@ -5,6 +5,7 @@
 ###########################################################
 
 # Install necessary dependencies for Bluetooth
+sudo apt-get update
 sudo apt-get install -y python3-pip libglib2.0-dev
 
 # Install Python dependencies
