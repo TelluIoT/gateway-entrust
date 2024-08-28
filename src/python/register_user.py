@@ -23,6 +23,6 @@ def connect_to_url(url):
 if __name__ == "__main__":
     with open('mock_mac.txt') as file:
         mac = file.read()
-    url = f"http://localhost:3015/register?macAddress={mac}"
+    url = f"http://host.docker.internal:3015/register?macAddress={mac}"
     # Connect to the URL
     connect_to_url(url)

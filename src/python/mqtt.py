@@ -4,9 +4,9 @@ import time
 class MQTTClient:
     def __init__(self, sensorMacAddress: str):
         self._client = mqtt.Client()
-        self._topic = "gateway3"
-        self._username = 'gateway3'
-        self._password = 'gateway31234'
+        self._topic = sensorMacAddress
+        self._username = sensorMacAddress
+        self._password = sensorMacAddress + '1234'
         self._broker_address = "host.docker.internal"
         self._broker_port = 1885
         self._keep_alive = 60

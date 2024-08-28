@@ -26,6 +26,6 @@ if __name__ == "__main__":
     with open('mock_secret.txt') as file:
         secret = file.read()
     
-    url = f"http://host.docker.internal:3015/getCredentials?macAddress={mac}&secret={secret}"
+    url = f"http://host.docker.internal:3015/Wipe?macAddress={mac}"
     # Connect to the URL
     connect_to_url(url)
