@@ -20,6 +20,8 @@ async def main():
     mqtt_client = MQTTClient(mac_address)
     mqtt_client.connect()
     mqtt_client.publish(data)
+
+    mqtt_client.subscribe()
         
     # Keep the script running to subscribe
     try:
