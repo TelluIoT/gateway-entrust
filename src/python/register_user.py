@@ -1,4 +1,5 @@
 import requests
+from config import hostname, port
 
 def connect_to_url(url):
     try:
@@ -6,7 +7,7 @@ def connect_to_url(url):
         response = requests.get(url)
         
         # Check if the request was successful (status code 200)
-        if response.status_code == 200:
+        if response.status_code == 200 or response.status_code == 201:
             print(f"Successfully connected to {url}")
             print(f"Response Status Code: {response.status_code}")
             print(f"Response Headers: {response.headers}")
@@ -23,6 +24,6 @@ def connect_to_url(url):
 if __name__ == "__main__":
     with open('mock_mac.txt') as file:
         mac = file.read()
-    url = f"http://host.docker.internal:3015/register?macAddress={mac}"
+    url = f"{hostname}:{port}/register?macAddress={mac}"
     # Connect to the URL
     connect_to_url(url)

@@ -1,14 +1,15 @@
 import paho.mqtt.client as mqtt
 import time
+from config import mqtt_hostname, mqtt_port
 
 class MQTTClient:
     def __init__(self, sensorMacAddress: str):
         self._client = mqtt.Client()
         self._topic = sensorMacAddress
         self._username = sensorMacAddress
-        self._password = sensorMacAddress + '1234'
-        self._broker_address = "host.docker.internal"
-        self._broker_port = 1885
+        self._password = sensorMacAddress + '1234' #TODO: read from file instead of computing
+        self._broker_address = mqtt_hostname
+        self._broker_port = mqtt_port # configured MQTT port on RabbitMQ component
         self._keep_alive = 60
         self._text_file = "attached_sensors.txt"
         
