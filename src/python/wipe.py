@@ -25,6 +25,6 @@ if __name__ == "__main__":
     with open('mock_mac.txt') as file:
         mac = file.read()
 
-    url = f"{hostname}:{port}/Wipe?macAddress={mac}&secret={secret}"
+    url = f"{hostname}:{port}/Wipe?macAddress={mac}"
     # Connect to the URL
     connect_to_url(url)
