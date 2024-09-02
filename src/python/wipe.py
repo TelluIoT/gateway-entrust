@@ -1,4 +1,6 @@
 import requests
+from config import hostname, port
+
 
 def connect_to_url(url):
     try:
@@ -19,13 +21,10 @@ def connect_to_url(url):
         # Handle any exceptions (network issues, invalid URL, etc.)
         print(f"An error occurred: {e}")
 
-
 if __name__ == "__main__":
     with open('mock_mac.txt') as file:
         mac = file.read()
-    with open('mock_secret.txt') as file:
-        secret = file.read()
-    
-    url = f"http://host.docker.internal:3015/Wipe?macAddress={mac}"
+
+    url = f"{hostname}:{port}/Wipe?macAddress={mac}&secret={secret}"
     # Connect to the URL
     connect_to_url(url)
