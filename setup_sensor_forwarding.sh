@@ -9,9 +9,13 @@ sudo apt-get update
 sudo apt-get install -y python3-pip libglib2.0-dev
 
 # Install Python dependencies
-pip3 install bleak
-pip3 install paho.mqtt
-pip3 install requests
+# pip3 install bleak
+# pip3 install paho.mqtt
+# pip3 install requests
+
+sudo apt install -y python3-bleak
+sudo apt install -y python3-paho-mqtt
+sudo apt install -y python3-requests
 
 export PYTHONPATH=./src/python/
 
