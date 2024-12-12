@@ -45,8 +45,9 @@ Take the ZeroTier Network ID that the gateway should be added to and pass to the
 `python3 get_credentials.py`
 
 3. Connect to RabbitMQ and send a dummy message to the platform
-4. 
+
 `python3 send_message.py`
 
-5. Wipe on the server and restart the process
+4. Wipe on the server and restart the process
+   
 `python3 wipe.py`
