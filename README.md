@@ -36,14 +36,17 @@ Take the ZeroTier Network ID that the gateway should be added to and pass to the
 
 
 ## 4. Run onboarding scripts manually
-Register the gateway in the onboarding server database
+1. Register the gateway in the onboarding server database
+
 `python3 register_user.py`
 
-Onboard on domain (after onboarding server database is in "requestClaim = true" for the gateway entry). Will create a RabbitMQ queue and RabbitMQ credentials and return to the caller.
+2. Onboard on domain (after onboarding server database is in "requestClaim = true" for the gateway entry). Will create a RabbitMQ queue and RabbitMQ credentials and return to the caller.
+
 `python3 get_credentials.py`
 
-Connect to RabbitMQ and send a dummy message to the platform
+3. Connect to RabbitMQ and send a dummy message to the platform
+4. 
 `python3 send_message.py`
 
-Wipe on the server and restart the process
+5. Wipe on the server and restart the process
 `python3 wipe.py`
