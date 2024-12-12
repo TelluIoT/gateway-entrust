@@ -37,4 +37,8 @@ Take the ZeroTier Network ID that the gateway should be added to and pass to the
 
 ## 4. Run onboarding scripts manually
 
-## 4.1 
+## 4.1 python3 register_user.py
+
+## 4.2 python3 get_credentials.py
+
+## 4.3 python3 send_message.py # connects and sends a dummy message to the platform
