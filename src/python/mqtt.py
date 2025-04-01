@@ -20,9 +20,11 @@ class MQTTClient:
 
     def connect(self):
         print(f"Connecting to MQTT broker at {self._broker_address}:{self._broker_port}...")
+        print(f"Connecting to MQTT broker, username {self._username}:{self._password}...")
         self._client.username_pw_set(self._username, self._password)
         try:
             self._client.connect(self._broker_address, self._broker_port, self._keep_alive)
+            print('Successfully called client.connect')
             self._client.loop_start()  # Start the loop to process network traffic and dispatch callbacks
         except Exception as e:
             print(f"Connection failed: {e}. Retrying in 30 seconds...")
@@ -58,6 +60,7 @@ class MQTTClient:
         print(f"Message '{message}' published to topic '{self._topic}'")
 
     def subscribe(self):
+        print('hit "subscribe" method in mqttClient')
         self._client.subscribe(self._topic)
         self._client.on_message = self.on_message
         print(f"subscribed to {self._topic}")

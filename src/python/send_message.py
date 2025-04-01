@@ -8,7 +8,6 @@ async def main():
     # Instantiate the Bluetooth adapter using the factory
     with open ("mock_mac.txt", 'r') as file:
         mac_address = file.read()
-    #mac_address = "A1:A1:A1:B1:B1:B1"
 
     adapter = BluetoothAdapterFactory.create_adapter("mock", mac_address)
 
@@ -19,9 +18,10 @@ async def main():
     data = await adapter.read_data()
 
     # Forward the read data to MQTT broker
+    print('Macaddress: ', mac_address)
     mqtt_client = MQTTClient(mac_address)
     mqtt_client.connect()
-    mqtt_client.publish(data)
+    # mqtt_client.publish(data)
 
     mqtt_client.subscribe()
         
