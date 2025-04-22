@@ -7,7 +7,8 @@ class MQTTClient:
         self._client = mqtt.Client()
         self._topic = 'A1'
         self._username = sensorMacAddress
-        self._password = sensorMacAddress + '1234' #TODO: read from file instead of computing
+        self._password = "admin"
+        # self._password = sensorMacAddress + '1234' #TODO: read from file instead of computing
         self._broker_address = mqtt_hostname
         self._broker_port = mqtt_port # configured MQTT port on RabbitMQ component
         self._keep_alive = 60

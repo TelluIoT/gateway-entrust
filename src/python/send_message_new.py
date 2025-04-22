@@ -18,8 +18,8 @@ async def main():
     data = await adapter.read_data()
 
     # Forward the read data to MQTT broker
-    print('Macaddress: ', mac_address)
-    mqtt_client = MQTTClient(mac_address)
+    print('Macaddress: ', "admin")
+    mqtt_client = MQTTClient("admin")
     mqtt_client.connect()
     # mqtt_client.publish(data)
 
