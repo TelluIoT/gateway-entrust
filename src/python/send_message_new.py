@@ -15,13 +15,14 @@ async def main():
     await adapter.connect()
 
     # Read data from the device
-    # data = await adapter.read_data()
+    with open ("tmb.txt", 'r') as file:
+        data = file.read()
 
     # Forward the read data to MQTT broker
     print('Macaddress: ', "admin")
     mqtt_client = MQTTClient("admin")
     mqtt_client.connect()
-    mqtt_client.publish("sending Message to the Rabbit MQ from Utkarsh")
+    mqtt_client.publish(data)
 
     mqtt_client.subscribe()
         
