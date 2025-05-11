@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mspl>
+  <name>mspl_update_due_to_low_risk</name>
+  <threatid>reduced-risk-trigger</threatid>
+  <type>software-mspl-type</type>
+  <configuration>
+    <capability>software-protection</capability>
+    <rule-set-configuration>
+      <name>mspl_set_low_risk_update</name>
+      <configuration-rule>
+        <name>SW_update_on_low_risk</name>
+        <isCNF>false</isCNF>
+        <external-data>
+          <priority>500</priority>
+        </external-data>
+        <configuration-action>
+          <software-protection-action>
+            <software-protection-type>UPDATE</software-protection-type>
+            <software-fixed-version>0.4</software-fixed-version>
+            <software-fix-url>https://hub.docker.com/repository/docker/rdautov/trust-agent</software-fix-url>
+          </software-protection-action>
+        </configuration-action>
+        <configuration-condition>
+          <device-configuration-condition>            
+            <device-identification-condition>
+              <!-- "device-id" should be the ID of the target device in the Digital Twin platform on the DTA side -->
+              <device-id>device-1234-xyz</device-id>             
+            </device-identification-condition>
+          </device-configuration-condition>
+        </configuration-condition>
+      </configuration-rule>
+    </rule-set-configuration>
+  </configuration>
+</mspl>
