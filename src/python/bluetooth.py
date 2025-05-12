@@ -76,7 +76,7 @@ class AdapterMock(IBluetoothAdapter):
     async def read_data(self):
         print("Reading data from device...")
         await asyncio.sleep(1)
-        data = "This is dummy data!!"
+        data = "58"
         print(f"Data received: {data}")
         return data
 

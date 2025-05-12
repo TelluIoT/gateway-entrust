@@ -2,12 +2,16 @@ import asyncio
 from bluetooth import BluetoothAdapterFactory
 from mqtt import MQTTClient;
 import time
+import json
 
 
 async def main():
     # Instantiate the Bluetooth adapter using the factory
     with open ("mock_mac.txt", 'r') as file:
         mac_address = file.read()
+    
+    with open ("mock_secret.txt", 'r') as file:
+        secret = file.read()
 
     adapter = BluetoothAdapterFactory.create_adapter("mock", mac_address)
 
@@ -21,7 +25,19 @@ async def main():
     print('Macaddress: ', mac_address)
     mqtt_client = MQTTClient(mac_address)
     mqtt_client.connect()
-    # mqtt_client.publish(data)
+
+    # TODO: hash with the secret as salt? Decrypt when received in TelluCare
+    payload = {
+        'gatewayMac': mac_address,
+        'sensorMac': adapter.macAddress,
+        'value': data,
+        'type': 'measurement',
+        'secret': secret,
+    }
+
+    jsonPayload = json.dumps(payload)
+    
+    mqtt_client.publish(jsonPayload)
 
     mqtt_client.subscribe()
         
