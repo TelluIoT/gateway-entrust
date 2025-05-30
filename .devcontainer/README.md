@@ -1,5 +1,6 @@
 # Deployment instructions
-To run the repository in a devcontainer, open in VsCode, CTRL+ALT+P > Dev Containers -> Reopen in Container.
+
+To run the repository in a devcontainer, open in VsCode, CTRL+SHIFT+P > Dev Containers -> Reopen in Container.
 
 The container will build and launch. The code is run as if it was actually running on a linux machine (emulating the Raspberry Pi), so the repositories are installed directly on the machine.
 Any edits to the repository inside the container happen in the actual repository, so git etc works as normally.

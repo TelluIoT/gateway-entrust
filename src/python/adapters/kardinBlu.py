@@ -4,7 +4,7 @@ import time
 from bleak import BleakClient, BleakScanner
 import paho.mqtt.client as mqtt
 
-# MQTT client setup
+# MQTT client setup => TODO: move out of this file, so it can be injected
 mqtt_client = mqtt.Client()
 mqtt_client.username_pw_set(username="admin", password="admin")
 
@@ -56,7 +56,7 @@ Multiparameter  : F4:AD:F2:BC:83:44
 async def run():
     address = "C1:74:BE:E1:26:EB" # TODO: read from config file (set by MQTT instructions for paired devices)
     command_uuid = "87654321-1234-f393-e0a9-e50e24dcca9e" # what is this?
-    response_uuid = "87654321-4321-8765-4321-56789abcdef0" # what is this?
+    response_uuid = "87654321-4321-8765-4321-56789abcdef0"
 
     while True:
         try:
@@ -91,7 +91,7 @@ async def run():
 
         start_time = time.time()
         while time.time() - start_time < duration:
-            await client.start_notify(response_uuid, handle_notify)
+            await client.start_notify(response_uuid, handle_notify) # this command will trigger the simulated measurement generation in the kardinBLU, making it generate measurements.
             await asyncio.sleep(1)
 
 if __name__ == "__main__":
