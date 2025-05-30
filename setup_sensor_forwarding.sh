@@ -16,6 +16,7 @@ sudo apt-get install -y python3-pip libglib2.0-dev
 sudo apt install -y python3-bleak
 sudo apt install -y python3-paho-mqtt
 sudo apt install -y python3-requests
+sudo apt install -y python3-signal
 
 export PYTHONPATH=./src/python/
 
