@@ -40,9 +40,12 @@ class BluetoothAdapter:
         # with open('grouped_data.csv', 'a', newline='') as csvfile:
         #     writer = csv.writer(csvfile)
         #     writer.writerow(grouped_data)
+        print("grouped data", grouped_data)
+        
 
         # Publish data to MQTT broker
         message = ','.join(grouped_data)
+    
         self.mqtt_handler.publish_data("FC:46:EC:71:74:01", message)
 
 
@@ -61,7 +64,7 @@ class BluetoothAdapter:
 
         start_time = time.time()
         while time.time() - start_time < config.BLE_MEASUREMENT_DURATION:
-            await client.start_notify(response_uuid, handle_notify) # this command will trigger the simulated measurement generation in the kardinBLU, making it generate measurements.
+            await client.start_notify(response_uuid, self.handle_notify) # this command will trigger the simulated measurement generation in the kardinBLU, making it generate measurements.
             await asyncio.sleep(1)
         
     async def scan_devices(self, timeout: float = 5.0) -> List[Dict[str, Any]]:

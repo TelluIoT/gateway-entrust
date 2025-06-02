@@ -207,7 +207,8 @@ class Gateway:
 
             elif instruction_type == 'read':
                 print(f"Received read instruction: {instruction}")
-                await self.ble_adapter.read_data(instruction.sensorMac)
+                address = instruction['address']
+                await self.ble_adapter.read_data(address)
            
 
             else:
