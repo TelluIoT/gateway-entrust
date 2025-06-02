@@ -51,7 +51,7 @@ class Gateway:
         self.ble_adapter.inject_mqtt_handler(self.mqtt_handler)
         
         # Set up callbacks
-        # self.mqtt_handler.set_pairing_callback(self.handle_pairing_instruction)
+        # self.mqtt_handler.set_pairing_callback(self.handle_instruction)
         
         # For clean shutdown
         self.running = True
@@ -183,7 +183,7 @@ class Gateway:
         # Connect to broker
         return self.mqtt_handler.connect()
     
-    async def handle_pairing_instruction(self, instruction: Dict[str, Any]):
+    async def handle_instruction(self, instruction: Dict[str, Any]):
         """
         Handle pairing instructions received from MQTT.
         
@@ -192,17 +192,14 @@ class Gateway:
         """
         try:
             instruction_type = instruction.get('type')
-            # loop = self.get_event_loop()
-            
+
             if instruction_type == 'pair':
                 print(f"Received pairing instruction: {instruction}")
-            #     # Schedule the pairing operation to run asynchronously
-            #     self.ble_adapter.pair_device(instruction)
+                await self.ble_adapter.pair_device(instruction)
                 
             elif instruction_type == 'unpair':
                 print(f"Received unpairing instruction: {instruction}")
-            #     # Schedule the unpairing operation to run asynchronously
-            #     self.ble_adapter.unpair_device(instruction)
+                await self.ble_adapter.unpair_device(instruction)
             
             elif instruction_type == 'scan':
                 print(f"Received scan instruction: {instruction}")
@@ -260,7 +257,7 @@ class Gateway:
                         while True:
                             instruction = queue.get_nowait()
                             print(f"Processing instruction: {instruction}")
-                            await self.handle_pairing_instruction(instruction)
+                            await self.handle_instruction(instruction)
                             queue.task_done()  # Mark the instruction as processed
                             # TODO: handle different types of instructions - rename to handle_instruction(?)
                        
