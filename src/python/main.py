@@ -23,7 +23,7 @@ class GatewayState:
     REGISTERED = "registered"
     CONNECTED = "connected"
 
-
+attempts = 0  # Global variable to track registration attempts
 class Gateway:
     """
     Main gateway class that manages the state machine and coordinates components.
@@ -201,6 +201,11 @@ class Gateway:
                 print(f"Received unpairing instruction: {instruction}")
                 # Schedule the unpairing operation to run asynchronously
                 loop.create_task(self.ble_adapter.unpair_device(instruction))
+            
+            elif instruction_type == 'scan':
+                print(f"Received scan instruction: {instruction}")
+                # Schedule the scanning operation to run asynchronously
+                loop.create_task(self.ble_adapter.scan_devices(config.BLE_SCAN_TIMEOUT))
                 
             else:
                 print(f"Unknown instruction type: {instruction_type}")
@@ -217,24 +222,27 @@ class Gateway:
         while self.running:
             try:
                 # State machine
-                if self.state == GatewayState.UNREGISTERED:
+                if self.state == GatewayState.UNREGISTERED and attempts < config.MAX_REGISTRATION_ATTEMPTS:
                     print("Gateway is unregistered. Attempting to register...")
                     if await self.register_gateway():
                         self.state = GatewayState.REGISTERED
                     else:
                         # Wait before retrying registration
+                        attempts += 1
                         await asyncio.sleep(10)
                         
-                elif self.state == GatewayState.REGISTERED:
+                elif self.state == GatewayState.REGISTERED and attempts < config.MAX_REGISTRATION_ATTEMPTS:
                     print("Gateway is registered. Requesting MQTT credentials...")
                     if await self.get_mqtt_credentials():
                         if await self.connect_mqtt():
                             self.state = GatewayState.CONNECTED
                         else:
                             # Wait before retrying MQTT connection
+                            attempts += 1
                             await asyncio.sleep(5)
                     else:
                         # Wait before retrying credential request
+                        attempts += 1
                         await asyncio.sleep(10)
                         
                 elif self.state == GatewayState.CONNECTED:

@@ -3,6 +3,7 @@ Configuration file for the gateway application.
 """
 
 INITIAL_STATE = "connected"  # Initial state of the gateway: "unregistered" | "registered" | "connected"
+MAX_REGISTRATION_ATTEMPTS = 10
  
 # Gateway identification
 GATEWAY_MAC = "B827EBB63381"  # Replace with your actual MAC address or device ID
