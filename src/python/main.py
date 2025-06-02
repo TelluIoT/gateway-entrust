@@ -257,10 +257,9 @@ class Gateway:
                    
                     try:
                         # Process any events in the queue
-                        print("Processing instructions")
                         while True:
                             instruction = queue.get_nowait()
-                            # print(f"Processing instruction: {instruction}")
+                            print(f"Processing instruction: {instruction}")
                             await self.handle_pairing_instruction(instruction)
                             queue.task_done()  # Mark the instruction as processed
                             # TODO: handle different types of instructions - rename to handle_instruction(?)
