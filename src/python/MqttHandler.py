@@ -14,7 +14,7 @@ class MqttHandler:
     """
     Handles MQTT communication for the gateway.
     """
-    def __init__(self, mac_address: str, broker: str, port: int, keep_alive: int = 60):
+    def __init__(self, queue: asyncio.Queue, mac_address: str, broker: str, port: int, keep_alive: int = 60):
         """
         Initialize the MQTT handler.
         
@@ -35,12 +35,11 @@ class MqttHandler:
         self.connected = False
         self.first_connect = True
         self.client = None
+
+        self.queue = queue  # Queue for handling messages
         
         # Callback for handling pairing instructions
         self.pairing_callback = None
-        
-        # Stores the currently paired Bluetooth devices
-        self.paired_devices = {}
     
     def set_credentials(self, username: str, password: str):
         """
@@ -206,12 +205,14 @@ class MqttHandler:
                 
                 # Handle pairing/unpairing instructions
                 if 'type' in message:
-                    if message['type'] == 'pair' and self.pairing_callback is not None:
-                        self.pairing_callback(message)
-                    elif message['type'] == 'unpair' and self.pairing_callback is not None:
-                        self.pairing_callback(message)
-                    elif message['type'] == 'scan' and self.pairing_callback is not None:
-                        self.pairing_callback(message)
+                    # if message['type'] == 'pair' and self.pairing_callback is not None:
+                    #     self.pairing_callback(message)
+                    # elif message['type'] == 'unpair' and self.pairing_callback is not None:
+                    #     self.pairing_callback(message)
+                    # elif message['type'] == 'scan' and self.pairing_callback is not None:
+                    #     self.pairing_callback(message)
+
+                    self.queue.put_nowait(message)  # Put message in the queue for further processing
             except json.JSONDecodeError:
                 print("Received message is not valid JSON")
                 

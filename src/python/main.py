@@ -23,6 +23,7 @@ class GatewayState:
     REGISTERED = "registered"
     CONNECTED = "connected"
 
+queue = asyncio.Queue()  # Global queue for events
 attempts = 0  # Global variable to track registration attempts
 class Gateway:
     """
@@ -39,6 +40,7 @@ class Gateway:
         
         # Handlers
         self.mqtt_handler = MqttHandler(
+            queue,
             self.mac_address,
             config.MQTT_BROKER,
             config.MQTT_PORT,
@@ -46,30 +48,30 @@ class Gateway:
         )
         
         self.ble_adapter = BluetoothAdapter()
+        self.ble_adapter.inject_mqtt_handler(self.mqtt_handler)
         
         # Set up callbacks
-        self.mqtt_handler.set_pairing_callback(self.handle_pairing_instruction)
-        self.ble_adapter.inject_mqtt_handler(self.mqtt_handler)
+        # self.mqtt_handler.set_pairing_callback(self.handle_pairing_instruction)
         
         # For clean shutdown
         self.running = True
 
 
-    def get_event_loop(self):
-        """
-        Get the current event loop or create a new one if needed.
+    # def get_event_loop(self):
+    #     """
+    #     Get the current event loop or create a new one if needed.
         
-        Returns:
-            asyncio.AbstractEventLoop: The event loop
-        """
-        try:
-            # Try to get the current event loop
-            return asyncio.get_event_loop()
-        except RuntimeError:
-            # If there's no event loop in this thread, create a new one
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            return loop
+    #     Returns:
+    #         asyncio.AbstractEventLoop: The event loop
+    #     """
+    #     try:
+    #         # Try to get the current event loop
+    #         return asyncio.get_event_loop()
+    #     except RuntimeError:
+    #         # If there's no event loop in this thread, create a new one
+    #         loop = asyncio.new_event_loop()
+    #         asyncio.set_event_loop(loop)
+    #         return loop
         
     async def register_gateway(self) -> bool:
         """
@@ -181,7 +183,7 @@ class Gateway:
         # Connect to broker
         return self.mqtt_handler.connect()
     
-    def handle_pairing_instruction(self, instruction: Dict[str, Any]):
+    async def handle_pairing_instruction(self, instruction: Dict[str, Any]):
         """
         Handle pairing instructions received from MQTT.
         
@@ -190,29 +192,23 @@ class Gateway:
         """
         try:
             instruction_type = instruction.get('type')
-            loop = self.get_event_loop()
+            # loop = self.get_event_loop()
             
             if instruction_type == 'pair':
                 print(f"Received pairing instruction: {instruction}")
-                # Schedule the pairing operation to run asynchronously
-                loop.create_task(self.ble_adapter.pair_device(instruction))
+            #     # Schedule the pairing operation to run asynchronously
+            #     self.ble_adapter.pair_device(instruction)
                 
             elif instruction_type == 'unpair':
                 print(f"Received unpairing instruction: {instruction}")
-                # Schedule the unpairing operation to run asynchronously
-                loop.create_task(self.ble_adapter.unpair_device(instruction))
+            #     # Schedule the unpairing operation to run asynchronously
+            #     self.ble_adapter.unpair_device(instruction)
             
             elif instruction_type == 'scan':
                 print(f"Received scan instruction: {instruction}")
-                # Add more debug output
-                print("Creating scan task...")
-                task = loop.create_task(self.ble_adapter.scan_devices(config.BLE_SCAN_TIMEOUT))
-                print("Scan task created")
-                # Optional: add a done callback to report completion
-                task.add_done_callback(
-                    lambda t: print(f"Scan task completed: {'Successfully' if not t.exception() else f'With error: {t.exception()}'}")
-                )
-                
+                await self.ble_adapter.scan_devices(config.BLE_SCAN_TIMEOUT)
+           
+
             else:
                 print(f"Unknown instruction type: {instruction_type}")
                 
@@ -226,7 +222,7 @@ class Gateway:
         print(f"Starting gateway {self.mac_address}")
         
         while self.running:
-            try:
+            # try:
                 # State machine
                 if self.state == GatewayState.UNREGISTERED and attempts < config.MAX_REGISTRATION_ATTEMPTS:
                     print("Gateway is unregistered. Attempting to register...")
@@ -258,16 +254,28 @@ class Gateway:
                         if not await self.connect_mqtt():
                             # Fall back to registered state if connection fails
                             self.state = GatewayState.REGISTERED
-                    
-                    # Optionally, scan for Bluetooth devices periodically
-                    # await self.ble_adapter.scan_devices(config.BLE_SCAN_TIMEOUT)
+                   
+                    try:
+                        # Process any events in the queue
+                        print("Processing instructions")
+                        while True:
+                            instruction = queue.get_nowait()
+                            # print(f"Processing instruction: {instruction}")
+                            await self.handle_pairing_instruction(instruction)
+                            queue.task_done()  # Mark the instruction as processed
+                            # TODO: handle different types of instructions - rename to handle_instruction(?)
+                       
+                    except asyncio.QueueEmpty:
+                        # nothing to process
+                        pass
+
                     
                     # Main loop delay
                     await asyncio.sleep(5)
                     
-            except Exception as e:
-                print(f"Error in main loop: {e}")
-                await asyncio.sleep(10)
+            # except Exception as e:
+            #     print(f"Error in main loop: {e}")
+            #     await asyncio.sleep(10)
                 
     def stop(self):
         """
@@ -282,16 +290,18 @@ class Gateway:
             
         print("Gateway stopped")
 
-
 async def main():
     gateway = Gateway()
+
+    # Debug - run with no error handling
+    await gateway.run() # runs a state machine - does not return until stopped
     
-    try:
-        await gateway.run() # runs a state machine - does not return until stopped
-    except Exception as e:
-        print(f"Uncaught exception: {e}")
-    finally:
-        gateway.stop()
+    # try:
+    #     await gateway.run() # runs a state machine - does not return until stopped
+    # except Exception as e:
+    #     print(f"Uncaught exception: {e}")
+    # finally:
+    #     gateway.stop()
 
 
 if __name__ == "__main__":
