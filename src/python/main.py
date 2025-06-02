@@ -204,6 +204,10 @@ class Gateway:
             elif instruction_type == 'scan':
                 print(f"Received scan instruction: {instruction}")
                 await self.ble_adapter.scan_devices(config.BLE_SCAN_TIMEOUT)
+
+            elif instruction_type == 'read':
+                print(f"Received read instruction: {instruction}")
+                await self.ble_adapter.read_data(instruction.sensorMac)
            
 
             else:

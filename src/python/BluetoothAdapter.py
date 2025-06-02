@@ -7,6 +7,9 @@ import asyncio
 import json
 from typing import Dict, List, Optional, Callable, Any
 from bleak import BleakClient, BleakScanner
+import time
+import config as config
+from MqttHandler import MqttHandler
 
 class BluetoothAdapter:
     """
@@ -17,10 +20,10 @@ class BluetoothAdapter:
         Initialize the Bluetooth adapter.
         """
         self.connected_devices = {}  # MAC address -> BleakClient
-        self.mqtt_handler = None
+        self.mqtt_handler: MqttHandler = None
         self.notification_callbacks = {}  # MAC address -> characteristic UUID -> callback
         
-    def inject_mqtt_handler(self, mqtt_handler):
+    def inject_mqtt_handler(self, mqtt_handler: MqttHandler):
         """
         Inject the MQTT handler for publishing received data.
         
@@ -28,6 +31,38 @@ class BluetoothAdapter:
             mqtt_handler: The MQTT handler instance.
         """
         self.mqtt_handler = mqtt_handler
+
+    async def handle_notify(self, sender, data):
+        hex_data = data.hex()
+        grouped_data = [hex_data[i:i+2] for i in range(0, len(hex_data), 2)]
+
+        # # Write grouped data to CSV
+        # with open('grouped_data.csv', 'a', newline='') as csvfile:
+        #     writer = csv.writer(csvfile)
+        #     writer.writerow(grouped_data)
+
+        # Publish data to MQTT broker
+        message = ','.join(grouped_data)
+        self.mqtt_handler.publish_data("FC:46:EC:71:74:01", message)
+
+
+    async def read_data(self, address: str):
+        command_uuid = "87654321-1234-f393-e0a9-e50e24dcca9e" # what is this?
+        response_uuid = "87654321-4321-8765-4321-56789abcdef0"
+
+        client = self.connected_devices[address]
+
+        try:
+            print(f"Sending 0x35 command to UUID: {command_uuid}")
+            await client.write_gatt_char(command_uuid, b"\x35")
+            print("Command sent successfully!")
+        except Exception as e:
+            print(f"Error sending command: {e}")
+
+        start_time = time.time()
+        while time.time() - start_time < config.BLE_MEASUREMENT_DURATION:
+            await client.start_notify(response_uuid, handle_notify) # this command will trigger the simulated measurement generation in the kardinBLU, making it generate measurements.
+            await asyncio.sleep(1)
         
     async def scan_devices(self, timeout: float = 5.0) -> List[Dict[str, Any]]:
         """
