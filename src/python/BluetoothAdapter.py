@@ -8,7 +8,7 @@ import json
 from typing import Dict, List, Optional, Callable, Any
 from bleak import BleakClient, BleakScanner
 
-class BluetoothAdapterCopilot:
+class BluetoothAdapter:
     """
     Handles Bluetooth Low Energy communication for the gateway.
     """

@@ -10,7 +10,7 @@ import paho.mqtt.client as mqtt
 from typing import Callable, Optional, Dict, Any
 
 
-class MqttHandlerCopilot:
+class MqttHandler:
     """
     Handles MQTT communication for the gateway.
     """

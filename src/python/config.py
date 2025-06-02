@@ -2,8 +2,12 @@
 Configuration file for the gateway application.
 """
 
+INITIAL_STATE = "connected"  # Initial state of the gateway: "unregistered" | "registered" | "connected"
+ 
 # Gateway identification
 GATEWAY_MAC = "B827EBB63381"  # Replace with your actual MAC address or device ID
+MOCK_SECRET = "B827EBB63381abcd"
+MOCK_PASSWORD = "B827EBB633811234"
 
 # HTTP Endpoints
 REGISTRATION_ENDPOINT = "http://34.240.4.8:3010/register"  # Replace with actual registration endpoint

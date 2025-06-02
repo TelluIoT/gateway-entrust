@@ -10,11 +10,11 @@ import requests
 from typing import Dict, Optional, Any
 
 # Import configuration
-import configCopilot as config
+import config as config
 
 # Import handlers
-from MqttHandlerCopilot import MqttHandlerCopilot
-from BluetoothAdapterCopilot import BluetoothAdapterCopilot
+from MqttHandler import MqttHandler
+from BluetoothAdapter import BluetoothAdapter
 
 
 class GatewayState:
@@ -30,22 +30,22 @@ class Gateway:
     """
     def __init__(self):
         self.mac_address = config.GATEWAY_MAC
-        self.state = GatewayState.CONNECTED # default state
+        self.state = config.INITIAL_STATE # default state
         
         # Credentials and secret (would be stored persistently in production)
-        self.secret = config.GATEWAY_MAC + 'abcd'
+        self.secret = config.MOCK_SECRET
         self.mqtt_username = config.GATEWAY_MAC
-        self.mqtt_password = config.GATEWAY_MAC + '1234'
+        self.mqtt_password = config.MOCK_PASSWORD
         
         # Handlers
-        self.mqtt_handler = MqttHandlerCopilot(
+        self.mqtt_handler = MqttHandler(
             self.mac_address,
             config.MQTT_BROKER,
             config.MQTT_PORT,
             config.MQTT_KEEPALIVE
         )
         
-        self.ble_adapter = BluetoothAdapterCopilot()
+        self.ble_adapter = BluetoothAdapter()
         
         # Set up callbacks
         self.mqtt_handler.set_pairing_callback(self.handle_pairing_instruction)
@@ -53,6 +53,23 @@ class Gateway:
         
         # For clean shutdown
         self.running = True
+
+
+    def get_event_loop(self):
+        """
+        Get the current event loop or create a new one if needed.
+        
+        Returns:
+            asyncio.AbstractEventLoop: The event loop
+        """
+        try:
+            # Try to get the current event loop
+            return asyncio.get_event_loop()
+        except RuntimeError:
+            # If there's no event loop in this thread, create a new one
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            return loop
         
     async def register_gateway(self) -> bool:
         """
@@ -173,16 +190,17 @@ class Gateway:
         """
         try:
             instruction_type = instruction.get('type')
+            loop = self.get_event_loop()
             
             if instruction_type == 'pair':
                 print(f"Received pairing instruction: {instruction}")
                 # Schedule the pairing operation to run asynchronously
-                asyncio.create_task(self.ble_adapter.pair_device(instruction))
+                loop.create_task(self.ble_adapter.pair_device(instruction))
                 
             elif instruction_type == 'unpair':
                 print(f"Received unpairing instruction: {instruction}")
                 # Schedule the unpairing operation to run asynchronously
-                asyncio.create_task(self.ble_adapter.unpair_device(instruction))
+                loop.create_task(self.ble_adapter.unpair_device(instruction))
                 
             else:
                 print(f"Unknown instruction type: {instruction_type}")
@@ -255,7 +273,7 @@ async def main():
     gateway = Gateway()
     
     try:
-        await gateway.run()
+        await gateway.run() # runs a state machine - does not return until stopped
     except Exception as e:
         print(f"Uncaught exception: {e}")
     finally:
@@ -263,4 +281,4 @@ async def main():
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    asyncio.run(main()) # initialize the event loop
