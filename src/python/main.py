@@ -204,8 +204,14 @@ class Gateway:
             
             elif instruction_type == 'scan':
                 print(f"Received scan instruction: {instruction}")
-                # Schedule the scanning operation to run asynchronously
-                loop.create_task(self.ble_adapter.scan_devices(config.BLE_SCAN_TIMEOUT))
+                # Add more debug output
+                print("Creating scan task...")
+                task = loop.create_task(self.ble_adapter.scan_devices(config.BLE_SCAN_TIMEOUT))
+                print("Scan task created")
+                # Optional: add a done callback to report completion
+                task.add_done_callback(
+                    lambda t: print(f"Scan task completed: {'Successfully' if not t.exception() else f'With error: {t.exception()}'}")
+                )
                 
             else:
                 print(f"Unknown instruction type: {instruction_type}")
