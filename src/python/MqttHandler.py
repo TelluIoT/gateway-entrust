@@ -210,6 +210,8 @@ class MqttHandler:
                         self.pairing_callback(message)
                     elif message['type'] == 'unpair' and self.pairing_callback is not None:
                         self.pairing_callback(message)
+                    elif message['type'] == 'scan' and self.pairing_callback is not None:
+                        self.pairing_callback(message)
             except json.JSONDecodeError:
                 print("Received message is not valid JSON")
                 
