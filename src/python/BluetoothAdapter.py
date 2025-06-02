@@ -51,7 +51,8 @@ class BluetoothAdapter:
             }
             device_list.append(device_info)
             print(f"Found device: {device.name or 'Unknown'} ({device.address}) - RSSI: {device.rssi}")
-            
+        
+        print(f"Scan complete. Found {len(device_list)} devices.")
         return device_list
         
     async def connect_device(self, address: str) -> bool:

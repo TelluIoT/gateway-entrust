@@ -20,4 +20,4 @@ MQTT_PORT = 1885  # Replace with actual MQTT port
 MQTT_KEEPALIVE = 60  # Keep alive time in seconds
 
 # Bluetooth Configuration
-BLE_SCAN_TIMEOUT = 5.0  # Scanning timeout in seconds
+BLE_SCAN_TIMEOUT = 30.0  # Scanning timeout in seconds
