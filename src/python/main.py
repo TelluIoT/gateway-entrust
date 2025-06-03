@@ -26,6 +26,7 @@ class GatewayState:
 queue = asyncio.Queue()  # Global queue for events
 attempts = 0  # Global variable to track registration attempts
 
+
 class Gateway:
     """
     Main gateway class that manages the state machine and coordinates components.
@@ -58,6 +59,7 @@ class Gateway:
         self.running = True
 
         self.isFirstBoot = True   # Global variable to track if this is the first boot
+        self.heartbeat_counter = 0 
 
 
     # def get_event_loop(self):
@@ -298,8 +300,29 @@ class Gateway:
                         # nothing to process
                         pass
 
+                    if self.heartbeat_counter == 12:  # every 1 minutes
+                        print("Sending heartbeat...")
+                        
+                        # Get connected sensors and their status
+                        sensors = []
+                        for address, client in self.ble_adapter.connected_devices.items():
+                            sensors.append({
+                                "address": address,
+                                "ispaired": client.is_connected
+                            })
+                        
+                        payload = {
+                            'from': self.mac_address,
+                            'timestamp': int(time.time()),
+                            'type': "heartbeat",
+                            'gatewayMac': self.mac_address,
+                            'sensorlist': sensors  # Directly include the sensor list as a JSON array
+                        }
+                        self.mqtt_handler.publish(json.dumps(payload))
+                        self.heartbeat_counter = 0
                     
                     # Main loop delay
+                    self.heartbeat_counter += 1
                     await asyncio.sleep(5)
                     
             # except Exception as e:
