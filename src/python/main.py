@@ -25,7 +25,6 @@ class GatewayState:
 
 queue = asyncio.Queue()  # Global queue for events
 attempts = 0  # Global variable to track registration attempts
-isFirstBoot = True   # Global variable to track if this is the first boot
 
 class Gateway:
     """
@@ -57,6 +56,8 @@ class Gateway:
         
         # For clean shutdown
         self.running = True
+
+        self.isFirstBoot = True   # Global variable to track if this is the first boot
 
 
     # def get_event_loop(self):
@@ -273,12 +274,12 @@ class Gateway:
                             # Fall back to registered state if connection fails
                             self.state = GatewayState.REGISTERED
 
-                    if isFirstBoot is True:
+                    if self.isFirstBoot is True:
                         print("First boot detected. Scanning for devices...")
                         await self.mqtt_handler.publish({
                             "type": "getsensorlist",
                         })
-                        isFirstBoot = False
+                        self.isFirstBoot = False
                    
                     try:
                         # Process any events in the queue
