@@ -63,9 +63,11 @@ class BluetoothAdapter:
             print(f"Error sending command: {e}")
 
         start_time = time.time()
-        while time.time() - start_time < config.BLE_MEASUREMENT_DURATION:
+        while (time.time() - start_time) < config.BLE_MEASUREMENT_DURATION:
             await client.start_notify(response_uuid, self.handle_notify) # this command will trigger the simulated measurement generation in the kardinBLU, making it generate measurements.
             await asyncio.sleep(1)
+
+        print("Data reading complete.")
         
     async def scan_devices(self, timeout: float = 5.0) -> List[Dict[str, Any]]:
         """

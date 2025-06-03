@@ -8,6 +8,7 @@ import json
 import time
 import paho.mqtt.client as mqtt
 from typing import Callable, Optional, Dict, Any
+from datetime import datetime
 
 
 class MqttHandler:
@@ -135,11 +136,13 @@ class MqttHandler:
             device_mac (str): MAC address of the Bluetooth device.
             data (Dict[str, Any]): Data to publish.
         """
+        
         payload = {
             'gatewayMac': self.mac_address,
             'sensorMac': device_mac,
-            'data': data,
-            'timestamp': int(time.time()),
+            'value': data,
+            'externalUrl': "https://lh3.googleusercontent.com/pw/AP1GczM6vlQ4njxv2pGSQ56z_opnBVoi13LjdzpFJ5XoZeNNab-WhgWDo1C1OVsZ7u7HZSfW0bExeOFpXUY_r31nMjx8aS7WTJjZ89qUWMBUCTM4RvAkm05OrCl1S3zLmceTD1yso_5yRzaaVP6pHFyW1xfYkQ=w1024-h723-s-no-gm?authuser=0",
+            'timestamp': datetime.now(datetime.timezone.utc).isoformat() + 'Z',
             'type': 'measurement',
         }
         
