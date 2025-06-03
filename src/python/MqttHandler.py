@@ -105,12 +105,12 @@ class MqttHandler:
             self.client.disconnect()
             self.connected = False
     
-    def publish(self, message: str, topic: str = None):
+    def publish(self, message: object, topic: str = None):
         """
         Publish a message to the MQTT broker.
         
         Args:
-            message (str): Message to publish.
+            message (object): Message to publish.
             topic (str, optional): Topic to publish to. If None, uses the MAC address as topic.
         """
         if not self.connected:
@@ -121,8 +121,9 @@ class MqttHandler:
             topic = self.mac_address
 
         message['from'] = self.mac_address  # Ensure 'from' field is set to the MAC address
+        message['timestamp'] = datetime.now(datetime.timezone.utc).isoformat() + 'Z'  # Add timestamp
             
-        result = self.client.publish(topic, message)
+        result = self.client.publish(topic, json.dumps(message), qos=1)
         if result.rc != mqtt.MQTT_ERR_SUCCESS:
             print(f"Failed to publish message: {result.rc}")
             return False
