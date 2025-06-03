@@ -4,11 +4,11 @@ Handles MQTT connection, publishing, subscribing, and message processing.
 """
 
 import asyncio
+import datetime
 import json
 import time
 import paho.mqtt.client as mqtt
 from typing import Callable, Optional, Dict, Any
-from datetime import datetime
 
 
 class MqttHandler:
@@ -105,7 +105,7 @@ class MqttHandler:
             self.client.disconnect()
             self.connected = False
     
-    def publish(self, message: object, topic: str = None):
+    def publish(self, message: str, topic: str = None):
         """
         Publish a message to the MQTT broker.
         
@@ -119,11 +119,8 @@ class MqttHandler:
             
         if topic is None:
             topic = self.mac_address
-
-        message['from'] = self.mac_address  # Ensure 'from' field is set to the MAC address
-        message['timestamp'] = datetime.now(datetime.timezone.utc).isoformat() + 'Z'  # Add timestamp
             
-        result = self.client.publish(topic, json.dumps(message), qos=1)
+        result = self.client.publish(topic, message, qos=1)
         if result.rc != mqtt.MQTT_ERR_SUCCESS:
             print(f"Failed to publish message: {result.rc}")
             return False
@@ -146,7 +143,7 @@ class MqttHandler:
             'sensorMac': device_mac,
             'value': data,
             'externalUrl': "https://lh3.googleusercontent.com/pw/AP1GczM6vlQ4njxv2pGSQ56z_opnBVoi13LjdzpFJ5XoZeNNab-WhgWDo1C1OVsZ7u7HZSfW0bExeOFpXUY_r31nMjx8aS7WTJjZ89qUWMBUCTM4RvAkm05OrCl1S3zLmceTD1yso_5yRzaaVP6pHFyW1xfYkQ=w1024-h723-s-no-gm?authuser=0",
-            'timestamp': datetime.now(datetime.timezone.utc).isoformat() + 'Z',
+            'timestamp': datetime.time().isoformat(),
             'type': 'measurement',
         }
         
@@ -211,7 +208,7 @@ class MqttHandler:
                 message = json.loads(message_str)
 
                 if message['from'] == self.mac_address:
-                    print(f"Message from self ({self.mac_address}), ignoring.")
+                    # print(f"Message from self ({self.mac_address}), ignoring.")
                     return
 
                 print(f"Message received on {msg.topic}: {message_str}")

@@ -276,9 +276,13 @@ class Gateway:
 
                     if self.isFirstBoot is True:
                         print("First boot detected. Scanning for devices...")
-                        await self.mqtt_handler.publish({
-                            "type": "getsensorlist",
-                        })
+                        payload = {
+                            'from': self.mac_address,
+                            'timestamp': int(time.time()),
+                            'type': "getsensorlist",
+                        }
+        
+                        self.mqtt_handler.publish(json.dumps(payload))
                         self.isFirstBoot = False
                    
                     try:
