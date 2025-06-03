@@ -119,6 +119,8 @@ class MqttHandler:
             
         if topic is None:
             topic = self.mac_address
+
+        message['from'] = self.mac_address  # Ensure 'from' field is set to the MAC address
             
         result = self.client.publish(topic, message)
         if result.rc != mqtt.MQTT_ERR_SUCCESS:
@@ -138,6 +140,7 @@ class MqttHandler:
         """
         
         payload = {
+            'from': self.mac_address,
             'gatewayMac': self.mac_address,
             'sensorMac': device_mac,
             'value': data,
@@ -200,11 +203,17 @@ class MqttHandler:
         """
         try:
             message_str = msg.payload.decode()
-            print(f"Message received on {msg.topic}: {message_str}")
-            
+
+
             # Try to parse message as JSON
             try:
                 message = json.loads(message_str)
+
+                if message['from'] == self.mac_address:
+                    print(f"Message from self ({self.mac_address}), ignoring.")
+                    return
+
+                print(f"Message received on {msg.topic}: {message_str}")
                 
                 # Handle pairing/unpairing instructions
                 if 'type' in message:

@@ -94,6 +94,19 @@ class BluetoothAdapter:
         
         print(f"Scan complete. Found {len(device_list)} devices.")
         return device_list
+    
+    def is_device_connected(self, address: str) -> bool:
+        """
+        Check if a device is connected.
+        
+        Args:
+            address (str): MAC address of the device.
+            
+        Returns:
+            bool: True if the device is connected, False otherwise.
+        """
+        return address in self.connected_devices and self.connected_devices[address].is_connected
+    
         
     async def connect_device(self, address: str) -> bool:
         """

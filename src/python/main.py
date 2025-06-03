@@ -209,6 +209,20 @@ class Gateway:
                 print(f"Received read instruction: {instruction}")
                 address = instruction['address']
                 await self.ble_adapter.read_data(address)
+
+            elif instruction_type == 'sensorlist':
+                print(f"Received sensorlist instruction: {instruction}")
+                
+                toPair = instruction['sensorlist']
+                for sensor in toPair:
+                    if not self.ble_adapter.is_device_connected(sensor['address']):
+                        successPaired = await self.ble_adapter.pair_device(sensor)
+
+                        if successPaired is True:
+                            print(f"Successfully paired sensor {sensor['address']}")
+                        else:
+                            print(f"Failed to pair sensor {sensor['address']}")
+
            
 
             else:
