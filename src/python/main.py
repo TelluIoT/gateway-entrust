@@ -168,6 +168,8 @@ class Gateway:
                 return False
                 
         except Exception as e:
+            if config.DEBUG_MODE:
+                    raise e
             print(f"Credentials request failed: {e}")
             return False
             
@@ -246,7 +248,7 @@ class Gateway:
         print(f"Starting gateway {self.mac_address}")
         
         while self.running:
-            # try:
+            try:
                 # State machine
                 if self.state == GatewayState.UNREGISTERED and attempts < config.MAX_REGISTRATION_ATTEMPTS:
                     print("Gateway is unregistered. Attempting to register...")
@@ -331,9 +333,11 @@ class Gateway:
                     self.heartbeat_counter += 1
                     await asyncio.sleep(5)
                     
-            # except Exception as e:
-            #     print(f"Error in main loop: {e}")
-            #     await asyncio.sleep(10)
+            except Exception as e:
+                if config.DEBUG_MODE:
+                    raise e
+                print(f"Error in main loop: {e}")
+                await asyncio.sleep(10)
                 
     def stop(self):
         """
