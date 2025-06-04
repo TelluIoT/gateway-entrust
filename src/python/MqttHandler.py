@@ -128,7 +128,7 @@ class MqttHandler:
             print(f"Published message to {topic}: {message}")
             return True
     
-    def publish_data(self, device_mac: str, data: List[str]):
+    def publish_data(self, device_mac: str, data: str):
         """
         Format and publish data from a Bluetooth device.
         

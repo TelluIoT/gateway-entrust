@@ -21,8 +21,8 @@ class DataCache:
     def __init__(self):
         self.cached_data = []
     
-    def get_data(self) -> List[str]:
-        return self.cached_data
+    def get_data(self) -> str:
+        return self.cached_data.join(',')
 
     async def handle_notify(self, sender, data):
         hex_data = data.hex()
