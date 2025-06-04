@@ -11,11 +11,6 @@ import time
 import config as config
 from MqttHandler import MqttHandler
 
-
-
-
-
-
 class DataCache:
 
     def __init__(self):

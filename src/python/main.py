@@ -24,7 +24,7 @@ class GatewayState:
     CONNECTED = "connected"
 
 queue = asyncio.Queue()  # Global queue for events
-attempts = 0  # Global variable to track registration attempts
+
 
 
 class Gateway:
@@ -60,6 +60,7 @@ class Gateway:
 
         self.isFirstBoot = True   # Global variable to track if this is the first boot
         self.heartbeat_counter = 0 
+        self.attempts = 0  # Global variable to track registration attempts
 
 
     # def get_event_loop(self):
@@ -250,27 +251,27 @@ class Gateway:
         while self.running:
             try:
                 # State machine
-                if self.state == GatewayState.UNREGISTERED and attempts < config.MAX_REGISTRATION_ATTEMPTS:
+                if self.state == GatewayState.UNREGISTERED and self.attempts < config.MAX_REGISTRATION_ATTEMPTS:
                     print("Gateway is unregistered. Attempting to register...")
                     if await self.register_gateway():
                         self.state = GatewayState.REGISTERED
                     else:
                         # Wait before retrying registration
-                        attempts += 1
+                        self.attempts += 1
                         await asyncio.sleep(10)
                         
-                elif self.state == GatewayState.REGISTERED and attempts < config.MAX_REGISTRATION_ATTEMPTS:
+                elif self.state == GatewayState.REGISTERED and self.attempts < config.MAX_REGISTRATION_ATTEMPTS:
                     print("Gateway is registered. Requesting MQTT credentials...")
                     if await self.get_mqtt_credentials():
                         if await self.connect_mqtt():
                             self.state = GatewayState.CONNECTED
                         else:
                             # Wait before retrying MQTT connection
-                            attempts += 1
+                            self.attempts += 1
                             await asyncio.sleep(5)
                     else:
                         # Wait before retrying credential request
-                        attempts += 1
+                        self.attempts += 1
                         await asyncio.sleep(10)
                         
                 elif self.state == GatewayState.CONNECTED:
@@ -354,14 +355,13 @@ class Gateway:
 
 async def main():
     gateway = Gateway()
-
-    # Debug - run with no error handling
-    await gateway.run() # runs a state machine - does not return until stopped
     
-    # try:
-    #     await gateway.run() # runs a state machine - does not return until stopped
-    # except Exception as e:
-    #     print(f"Uncaught exception: {e}")
+    try:
+        await gateway.run() # runs a state machine - does not return until stopped
+    except Exception as e:
+        if config.DEBUG_MODE:
+            raise e
+        print(f"Uncaught exception: {e}")
     # finally:
     #     gateway.stop()
 
