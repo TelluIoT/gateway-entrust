@@ -80,6 +80,8 @@ class BluetoothAdapter:
         while (time.time() - start_time) < config.BLE_MEASUREMENT_DURATION:
             await client.start_notify(response_uuid, dataCache.handle_notify) # this command will trigger the simulated measurement generation in the kardinBLU, making it generate measurements.
             await asyncio.sleep(1)
+        
+        await client.stop_notify(response_uuid)
 
         print("Data reading complete.")
 
