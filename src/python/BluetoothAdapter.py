@@ -22,7 +22,7 @@ class DataCache:
         self.cached_data = []
     
     def get_data(self) -> str:
-        return self.cached_data.join(',')
+        return ','.join(self.cached_data)
 
     async def handle_notify(self, sender, data):
         hex_data = data.hex()
