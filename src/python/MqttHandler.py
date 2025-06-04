@@ -8,7 +8,7 @@ import datetime
 import json
 import time
 import paho.mqtt.client as mqtt
-from typing import Callable, Optional, Dict, Any
+from typing import Callable, Optional, Dict, Any, List
 
 
 class MqttHandler:
@@ -128,7 +128,7 @@ class MqttHandler:
             print(f"Published message to {topic}: {message}")
             return True
     
-    def publish_data(self, device_mac: str, data: Dict[str, Any]):
+    def publish_data(self, device_mac: str, data: List[str]):
         """
         Format and publish data from a Bluetooth device.
         

@@ -21,6 +21,6 @@ MQTT_KEEPALIVE = 60  # Keep alive time in seconds
 
 # Bluetooth Configuration
 BLE_SCAN_TIMEOUT = 30.0  # Scanning timeout in seconds
-BLE_MEASUREMENT_DURATION = 10  # Measurement duration in seconds
+BLE_MEASUREMENT_DURATION = 5  # Measurement duration in seconds
 
 DEBUG_MODE = True

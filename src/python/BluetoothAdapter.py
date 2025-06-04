@@ -11,6 +11,34 @@ import time
 import config as config
 from MqttHandler import MqttHandler
 
+
+
+
+
+
+class DataCache:
+
+    def __init__(self):
+        self.cached_data = []
+    
+    def get_data(self) -> List[str]:
+        return self.cached_data
+
+    async def handle_notify(self, sender, data):
+        hex_data = data.hex()
+        grouped_data = [hex_data[i:i+2] for i in range(0, len(hex_data), 2)]
+
+        # # Write grouped data to CSV
+        # with open('grouped_data.csv', 'a', newline='') as csvfile:
+        #     writer = csv.writer(csvfile)
+        #     writer.writerow(grouped_data)
+        print("grouped data", grouped_data)
+        
+        message = ','.join(grouped_data)
+
+        self.cached_data.append(message)
+
+
 class BluetoothAdapter:
     """
     Handles Bluetooth Low Energy communication for the gateway.
@@ -32,22 +60,6 @@ class BluetoothAdapter:
         """
         self.mqtt_handler = mqtt_handler
 
-    async def handle_notify(self, sender, data):
-        hex_data = data.hex()
-        grouped_data = [hex_data[i:i+2] for i in range(0, len(hex_data), 2)]
-
-        # # Write grouped data to CSV
-        # with open('grouped_data.csv', 'a', newline='') as csvfile:
-        #     writer = csv.writer(csvfile)
-        #     writer.writerow(grouped_data)
-        print("grouped data", grouped_data)
-        
-
-        # Publish data to MQTT broker
-        message = ','.join(grouped_data)
-    
-        self.mqtt_handler.publish_data("FC:46:EC:71:74:01", message)
-
 
     async def read_data(self, address: str):
         command_uuid = "87654321-1234-f393-e0a9-e50e24dcca9e" # what is this?
@@ -62,12 +74,18 @@ class BluetoothAdapter:
         except Exception as e:
             print(f"Error sending command: {e}")
 
+        dataCache = DataCache()
+
         start_time = time.time()
         while (time.time() - start_time) < config.BLE_MEASUREMENT_DURATION:
-            await client.start_notify(response_uuid, self.handle_notify) # this command will trigger the simulated measurement generation in the kardinBLU, making it generate measurements.
+            await client.start_notify(response_uuid, dataCache.handle_notify) # this command will trigger the simulated measurement generation in the kardinBLU, making it generate measurements.
             await asyncio.sleep(1)
 
         print("Data reading complete.")
+
+        # Publish collected data to MQTT broker
+        dataList = dataCache.get_data()
+        self.mqtt_handler.publish_data("FC:46:EC:71:74:01", dataList)
         
     async def scan_devices(self, timeout: float = 5.0) -> List[Dict[str, Any]]:
         """
