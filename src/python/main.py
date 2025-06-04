@@ -311,7 +311,7 @@ class Gateway:
                         for address, client in self.ble_adapter.connected_devices.items():
                             print(f"Checking sensor {address} connection status...")
 
-                            isPaired = await self.ble_adapter.is_device_connected(address)
+                            isPaired = self.ble_adapter.is_device_connected(address)
                             sensors.append({
                                 "address": address,
                                 "ispaired": isPaired
