@@ -123,8 +123,7 @@ class BluetoothAdapter:
         Returns:
             bool: True if the device is connected, False otherwise.
         """
-        client = BleakClient(address)
-        return address in self.connected_devices and client.is_connected
+        return address in self.connected_devices
     
         
     async def connect_device(self, address: str) -> bool:

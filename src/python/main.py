@@ -303,14 +303,15 @@ class Gateway:
                         # nothing to process
                         pass
 
-                    if self.heartbeat_counter == 12:  # every 1 minutes
+                    if self.heartbeat_counter == 1:  # every 1 minutes
                         print("Sending heartbeat...")
                         
                         # Get connected sensors and their status
                         sensors = []
                         for address, client in self.ble_adapter.connected_devices.items():
+                            print(f"Checking sensor {address} connection status...")
 
-                            isPaired = self.ble_adapter.is_device_connected(address)
+                            isPaired = await self.ble_adapter.is_device_connected(address)
                             sensors.append({
                                 "address": address,
                                 "ispaired": isPaired
