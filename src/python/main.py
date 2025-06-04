@@ -309,9 +309,11 @@ class Gateway:
                         # Get connected sensors and their status
                         sensors = []
                         for address, client in self.ble_adapter.connected_devices.items():
+
+                            isPaired = self.ble_adapter.is_device_connected(address)
                             sensors.append({
                                 "address": address,
-                                "ispaired": client.is_connected
+                                "ispaired": isPaired
                             })
                         
                         payload = {
@@ -319,7 +321,7 @@ class Gateway:
                             'timestamp': int(time.time()),
                             'type': "heartbeat",
                             'gatewayMac': self.mac_address,
-                            'sensorlist': json.dumps(sensors)  # Directly include the sensor list as a JSON array
+                            'sensorlist': sensors,  # Directly include the sensor list as a JSON array
                         }
                         self.mqtt_handler.publish(json.dumps(payload))
                         self.heartbeat_counter = 0
