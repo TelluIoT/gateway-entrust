@@ -303,7 +303,7 @@ class Gateway:
                         # nothing to process
                         pass
 
-                    if self.heartbeat_counter == 1:  # every 1 minutes
+                    if self.heartbeat_counter == 12:  # every 1 minutes
                         print("Sending heartbeat...")
                         
                         # Get connected sensors and their status
