@@ -319,7 +319,7 @@ class Gateway:
                             'timestamp': int(time.time()),
                             'type': "heartbeat",
                             'gatewayMac': self.mac_address,
-                            'sensorlist': sensors  # Directly include the sensor list as a JSON array
+                            'sensorlist': json.dumps(sensors)  # Directly include the sensor list as a JSON array
                         }
                         self.mqtt_handler.publish(json.dumps(payload))
                         self.heartbeat_counter = 0
