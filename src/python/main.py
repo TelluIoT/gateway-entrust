@@ -234,6 +234,9 @@ class Gateway:
                 print(f"Unknown instruction type: {instruction_type}")
                 
         except Exception as e:
+            if config.DEBUG_MODE == True:
+                raise e
+            
             print(f"Error handling pairing instruction: {e}")
 
     async def run(self):
