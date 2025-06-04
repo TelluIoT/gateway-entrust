@@ -218,7 +218,7 @@ class Gateway:
             elif instruction_type == 'sensorlist':
                 print(f"Received sensorlist instruction: {instruction}")
                 
-                toPair = instruction['sensorlist']
+                toPair = instruction['sensors']
                 for sensor in toPair:
                     if not self.ble_adapter.is_device_connected(sensor['address']):
                         successPaired = await self.ble_adapter.pair_device(sensor)
