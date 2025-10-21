@@ -55,8 +55,8 @@ class BluetoothAdapter:
         """
         self.mqtt_handler = mqtt_handler
 
-
-    async def read_data(self, address: str):
+    # deprecated
+    async def read_data_obsolete(self, address: str):
         command_uuid = "87654321-1234-f393-e0a9-e50e24dcca9e"
         RESPONSE_UUID = "87654321-4321-8765-4321-56789abcdef0"
 
@@ -83,6 +83,32 @@ class BluetoothAdapter:
         # Publish collected data to MQTT broker
         dataList = dataCache.get_data()
         self.mqtt_handler.publish_data(address, dataList)
+
+    async def read_data(self, address: str):
+        RESPONSE_UUID = "87654321-4321-8765-4321-56789abcdef0"
+        
+        try:
+            dataCache = DataCache()
+            client = self.connected_devices[address]
+            if client.is_connected:
+                print(f"Connected to device: {address}")
+
+                dataCache = DataCache()
+
+                start_time = time.time()
+                while (time.time() - start_time) < config.BLE_MEASUREMENT_DURATION:
+                    await client.start_notify(RESPONSE_UUID, dataCache.handle_notify) # this command will trigger the simulated measurement generation in the kardinBLU, making it generate measurements.
+                    print(f"Listening for notifications from UUID '{RESPONSE_UUID}'...")
+                    await asyncio.sleep(1)
+
+                # Stop notifications
+                await client.stop_notify(RESPONSE_UUID)
+                print("Data reception complete.")
+            else:
+                print(f"Failed to connect to device: {address}")
+
+        except Exception as e:
+            print(f"An error occurred during the Bluetooth operation: {e}")
         
     async def scan_devices(self, timeout: float = 5.0) -> List[Dict[str, Any]]:
         """
