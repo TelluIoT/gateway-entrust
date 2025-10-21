@@ -104,6 +104,11 @@ class BluetoothAdapter:
                 # Stop notifications
                 await client.stop_notify(RESPONSE_UUID)
                 print("Data reception complete.")
+
+                # Publish collected data to MQTT broker
+                dataList = dataCache.get_data()
+                self.mqtt_handler.publish_data(address, dataList)
+                print("Data published.")
             else:
                 print(f"Failed to connect to device: {address}")
 
