@@ -57,8 +57,8 @@ class BluetoothAdapter:
 
 
     async def read_data(self, address: str):
-        command_uuid = "87654321-1234-f393-e0a9-e50e24dcca9e" # what is this?
-        response_uuid = "87654321-4321-8765-4321-56789abcdef0"
+        command_uuid = "87654321-1234-f393-e0a9-e50e24dcca9e"
+        RESPONSE_UUID = "87654321-4321-8765-4321-56789abcdef0"
 
         client = self.connected_devices[address]
 
@@ -73,16 +73,16 @@ class BluetoothAdapter:
 
         start_time = time.time()
         while (time.time() - start_time) < config.BLE_MEASUREMENT_DURATION:
-            await client.start_notify(response_uuid, dataCache.handle_notify) # this command will trigger the simulated measurement generation in the kardinBLU, making it generate measurements.
+            await client.start_notify(RESPONSE_UUID, dataCache.handle_notify) # this command will trigger the simulated measurement generation in the kardinBLU, making it generate measurements.
             await asyncio.sleep(1)
         
-        await client.stop_notify(response_uuid)
+        await client.stop_notify(RESPONSE_UUID)
 
         print("Data reading complete.")
 
         # Publish collected data to MQTT broker
         dataList = dataCache.get_data()
-        self.mqtt_handler.publish_data("FC:46:EC:71:74:01", dataList)
+        self.mqtt_handler.publish_data(address, dataList)
         
     async def scan_devices(self, timeout: float = 5.0) -> List[Dict[str, Any]]:
         """
