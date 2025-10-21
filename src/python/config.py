@@ -2,7 +2,7 @@
 Configuration file for the gateway application.
 """
 
-INITIAL_STATE = "unregistered"  # Initial state of the gateway: "unregistered" | "registered" | "connected"
+INITIAL_STATE = "connected"  # Initial state of the gateway: "unregistered" | "registered" | "connected"
 MAX_REGISTRATION_ATTEMPTS = 10
  
 # Gateway identification
