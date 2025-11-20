@@ -51,3 +51,28 @@ Take the ZeroTier Network ID that the gateway should be added to and pass to the
 4. Wipe on the server and restart the process
    
 `python3 wipe.py`
+
+
+
+## Procedure to deploy this repo/Tellu PHG on a OP-TEE RPi
+Deployment script
+
+// access ubuntu, pull the latest version of the repo. Then create a tarball/zip of the repo which can be transferred over sftp
+
+cd /mnt/c/repositories && tar czf gateway-entrust-arm64.tar.gz gateway-entrust
+
+// Sftp into the tcb and putr the file in "opt" folder
+sudo sftp root@192.168.1.222
+put /mnt/c/repositories/gateway-entrust-arm64.tar.gz /opt/
+
+// access the tcb and extract the repo
+ssh root@192.168.1.222
+
+cd /opt
+rm gateway-entrust-arm64.tar    	Remove old tarball, if it is there. Otherwise it will not update when unzipping
+gzip -d gateway-entrust-arm64.tar.gz
+tar xf gateway-entrust-arm64.tar
+
+// from here on out, install and run repo as normal
+<img width="735" height="379" alt="image" src="https://github.com/user-attachments/assets/418d4005-60ba-4c06-8b29-a8781793823c" />
+
