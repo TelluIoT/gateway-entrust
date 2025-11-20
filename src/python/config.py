@@ -2,7 +2,7 @@
 Configuration file for the gateway application.
 """
 
-INITIAL_STATE = "connected"  # Initial state of the gateway: "unregistered" | "registered" | "connected"
+INITIAL_STATE = "unregistered"  # Initial state of the gateway: "unregistered" | "registered" | "connected"
 MAX_REGISTRATION_ATTEMPTS = 10
  
 # Gateway identification
@@ -11,8 +11,9 @@ MOCK_SECRET = "B827EBB63381abcd"
 MOCK_PASSWORD = "B827EBB633811234"
 
 # HTTP Endpoints
-REGISTRATION_ENDPOINT = "http://34.240.4.8:3010/register"  # Replace with actual registration endpoint
-GET_CREDENTIALS_ENDPOINT = "http://34.240.4.8:3010/getCredentials"  # Replace with actual credentials endpoint
+REGISTRATION_ENDPOINT = "http://192.168.1.152:3010/register"  # Replace with actual registration endpoint
+WIPE_ENDPOINT = "http://192.168.1.152:3010/wipe"  # Replace with actual registration endpoint
+GET_CREDENTIALS_ENDPOINT = "http://192.168.1.152:3010/getCredentials"  # Replace with actual credentials endpoint
 
 # MQTT Configuration
 MQTT_BROKER = "34.240.4.8"  # Replace with actual MQTT broker address

@@ -78,6 +78,32 @@ class Gateway:
     #         loop = asyncio.new_event_loop()
     #         asyncio.set_event_loop(loop)
     #         return loop
+
+    async def reset(self, onlydb) -> bool:
+        """
+        Wipes the gateway from the server.
+        
+        Returns:
+            bool: True if registration was successful, False otherwise.
+        """
+        print(f"Attempting to register gateway {self.mac_address}...")
+        
+        try:
+            response = requests.get(
+                f"{config.WIPE_ENDPOINT}?macAddress={self.mac_address};onlydb={onlydb}",
+                timeout=10
+            )
+            
+            if response.status_code in [200, 201]:
+                print("Wipe successful")
+                return True
+            else:
+                print(f"Wipe failed: {response.status_code} - {response.text}")
+                return False
+                
+        except Exception as e:
+            print(f"Wipe request failed: {e}")
+            return False
         
     async def register_gateway(self) -> bool:
         """
