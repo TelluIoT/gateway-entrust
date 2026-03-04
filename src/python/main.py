@@ -39,6 +39,8 @@ class Gateway:
         self.secret = config.MOCK_SECRET
         self.mqtt_username = config.GATEWAY_MAC
         self.mqtt_password = config.MOCK_PASSWORD
+        self.atl = config.ATL
+        self.rtl = config.RTL
         
         # Handlers
         self.mqtt_handler = MqttHandler(
@@ -59,7 +61,7 @@ class Gateway:
         self.running = True
 
         self.isFirstBoot = True   # Global variable to track if this is the first boot
-        self.heartbeat_counter = 0 
+        self.heartbeat_counter = 11 
         self.attempts = 0  # Global variable to track registration attempts
 
 
@@ -216,6 +218,25 @@ class Gateway:
         
         # Connect to broker
         return self.mqtt_handler.connect()
+
+    def verify_atl_if_relevant(self, instruction: Dict[str, Any]) -> bool:
+        """
+        Verify the ATL in the instruction if it is relevant.
+        
+        Args:
+            instruction (Dict[str, Any]): The instruction to verify.
+        """
+        print(f"Verifying trust level for instruction: {instruction}")
+        if (self.atl < self.rtl):
+            print(f"Actual trust level ({self.atl}) is below required trust level {self.rtl}. INSTRUCTION REJECTED.")
+            createTechnical = instruction.get('createTechnical')
+            if (createTechnical is not None and isinstance(createTechnical, bool) and createTechnical == True):
+                # we trigger a technical alarm in the platform
+                print("Triggered technical alarm due to low trust level.")
+            return False
+        print(f"Actual trust level ({self.atl}) is above required trust level ({self.rtl}). INSTRUCTION ACCEPTED.")
+        return True
+
     
     async def handle_instruction(self, instruction: Dict[str, Any]):
         """
@@ -227,8 +248,19 @@ class Gateway:
         try:
             instruction_type = instruction.get('type')
 
+            # set ATL if provided in the instruction
+            atl = instruction.get('atl')
+            if (atl is not None and isinstance(atl, (float, int)) and not isinstance(atl, bool)):
+                print(f"Simulated ATL calculation triggered...")
+                print(f"Updating ATL to {atl} based on latest trust level calculation")
+                self.atl = atl
+
             if instruction_type == 'pair':
                 print(f"Received pairing instruction: {instruction}")
+
+                isTrustworthy = self.verify_atl_if_relevant(instruction)
+                if (isTrustworthy == False):
+                    return
                 await self.ble_adapter.pair_device(instruction)
                 
             elif instruction_type == 'unpair':
@@ -241,6 +273,10 @@ class Gateway:
 
             elif instruction_type == 'read':
                 print(f"Received read instruction: {instruction}")
+                isTrustworthy = self.verify_atl_if_relevant(instruction)
+                if (isTrustworthy == False):
+                    return
+
                 address = instruction['address']
                 await self.ble_adapter.read_data(address)
 
@@ -332,7 +368,7 @@ class Gateway:
                         # nothing to process
                         pass
 
-                    if self.heartbeat_counter == 12:  # every 1 minutes
+                    if self.heartbeat_counter >= 12:  # every 1 minutes
                         print("Sending heartbeat...")
                         
                         # Get connected sensors and their status
@@ -352,6 +388,8 @@ class Gateway:
                             'type': "heartbeat",
                             'gatewayMac': self.mac_address,
                             'sensorlist': sensors,  # Directly include the sensor list as a JSON array
+                            'atl': self.atl,
+                            'rtl': self.rtl,
                         }
                         self.mqtt_handler.publish(json.dumps(payload))
                         self.heartbeat_counter = 0
