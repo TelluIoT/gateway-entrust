@@ -38,9 +38,19 @@ class MqttHandler:
         self.client = None
 
         self.queue = queue  # Queue for handling messages
+        self.auto_subscribe_on_connect = True
         
         # Callback for handling pairing instructions
         self.pairing_callback = None
+
+    def set_auto_subscribe_on_connect(self, enabled: bool):
+        """
+        Control whether the handler subscribes to its default topic immediately after connect.
+
+        Args:
+            enabled (bool): True to auto-subscribe on connect, False otherwise.
+        """
+        self.auto_subscribe_on_connect = enabled
     
     def set_credentials(self, username: str, password: str):
         """
@@ -128,13 +138,14 @@ class MqttHandler:
             print(f"Published message to {topic}: {message}")
             return True
     
-    def publish_data(self, device_mac: str, data: str):
+    def publish_data(self, device_mac: str, data: str, topic: str = None):
         """
         Format and publish data from a Bluetooth device.
         
         Args:
             device_mac (str): MAC address of the Bluetooth device.
             data (Dict[str, Any]): Data to publish.
+            topic (str, optional): Topic to publish to. If None, uses the default gateway topic.
         """
         
         payload = {
@@ -147,7 +158,7 @@ class MqttHandler:
             'type': 'measurement',
         }
         
-        self.publish(json.dumps(payload))
+        self.publish(json.dumps(payload), topic=topic)
     
     def subscribe(self, topic: str = None):
         """
@@ -178,7 +189,8 @@ class MqttHandler:
             self.connected = True
             
             # Subscribe to the topic
-            self.subscribe()
+            if self.auto_subscribe_on_connect:
+                self.subscribe()
             
         
             if self.first_connect:
